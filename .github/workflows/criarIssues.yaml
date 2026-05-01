@@ -1,0 +1,191 @@
+name: Criar Issues
+
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  repository-projects: write
+  contents: read
+
+jobs:
+  criar-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup inicial de issues do projeto
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const numeroDoProjeto = 1;
+            const listaDeIssues = [
+              // Estado/Dados
+              { title: "[Estado/Dados] Definir model `Cliente` com todos os campos do diagrama de classes", body: "Definir model `Cliente` com todos os campos do diagrama de classes.", labels: ["Estado/Dados"] },
+              { title: "[Estado/Dados] Definir model `Consulta` (Atendimento) com todos os campos do diagrama de classes", body: "Definir model `Consulta` (Atendimento) com todos os campos do diagrama de classes.", labels: ["Estado/Dados"] },
+              { title: "[Estado/Dados] Definir model `Especialidade` com todos os campos do diagrama de classes", body: "Definir model `Especialidade` com todos os campos do diagrama de classes.", labels: ["Estado/Dados"] },
+              { title: "[Estado/Dados] Definir model `DiasAtendimento` com todos os campos do diagrama de classes", body: "Definir model `DiasAtendimento` com todos os campos do diagrama de classes.", labels: ["Estado/Dados"] },
+              { title: "[Estado/Dados] Definir enum/constantes para os status de atendimento: L, M, C, X, B", body: "Definir enum/constantes para os status de atendimento: L, M, C, X, B.", labels: ["Estado/Dados"] },
+              // Mockup
+              { title: "[Mockup] Criar mock de clientes com dados variados (mínimo 5 registros)", body: "Criar mock de clientes com dados variados (mínimo 5 registros).", labels: ["Mockup"] },
+              { title: "[Mockup] Criar mock de especialidades (mínimo 4 especialidades)", body: "Criar mock de especialidades (mínimo 4 especialidades).", labels: ["Mockup"] },
+              { title: "[Mockup] Expandir mock de médicos com especialidades e dias de atendimento vinculados", body: "Expandir mock de médicos com especialidades e dias de atendimento vinculados.", labels: ["Mockup"] },
+              { title: "[Mockup] Criar mock de agenda (slots de horários por médico para 2 meses, com status variados)", body: "Criar mock de agenda (slots de horários por médico para 2 meses, com status variados).", labels: ["Mockup"] },
+              { title: "[Mockup] Criar mock de consultas nos diferentes estados: marcada, confirmada, realizada, encerrada, cancelada", body: "Criar mock de consultas nos diferentes estados: marcada, confirmada, realizada, encerrada, cancelada.", labels: ["Mockup"] },
+              { title: "[Mockup] Criar hook `useCliente` para CRUD simulado de clientes", body: "Criar hook `useCliente` para CRUD simulado de clientes.", labels: ["Mockup"] },
+              { title: "[Mockup] Criar hook `useConsulta` para CRUD simulado de consultas", body: "Criar hook `useConsulta` para CRUD simulado de consultas.", labels: ["Mockup"] },
+              { title: "[Mockup] Criar hook `useEspecialidade` para listagem de especialidades", body: "Criar hook `useEspecialidade` para listagem de especialidades.", labels: ["Mockup"] },
+              { title: "[Mockup] Criar hook `useAgenda` para busca de slots de horários por médico e período", body: "Criar hook `useAgenda` para busca de slots de horários por médico e período.", labels: ["Mockup"] },
+              // Componentes
+              { title: "[Componentes] Criar componente `StatusAtendimento` para exibir status de atendimento (L, M, C, X, B) com cores distintas", body: "Criar componente `StatusAtendimento` para exibir status de atendimento (L, M, C, X, B) com cores distintas.", labels: ["Componentes"] },
+              { title: "[Componentes] Criar componente `CampoTexto` padronizado para formulários, com altura e largura passadas por parâmetro da função", body: "Criar componente `CampoTexto` padronizado para formulários, com altura e largura passadas por parâmetro da função.", labels: ["Componentes"] },
+              { title: "[Componentes] Criar componente `Lista` reutilizável para listagens de clientes e consultas", body: "Criar componente `Lista` reutilizável para listagens de clientes e consultas.", labels: ["Componentes"] },
+              { title: "[Componentes] Criar componente `ListaConsultas` com horários e dias da semana (estendendo `Lista.tsx`)", body: "Criar componente `ListaConsultas` com horários e dias da semana (estendendo `Lista.tsx`).", labels: ["Componentes"] },
+              { title: "[Componentes] Criar componente `PlanilhaAgenda` para exibir a grade de horários com status por dia da semana", body: "Criar componente `PlanilhaAgenda` para exibir a grade de horários com status por dia da semana.", labels: ["Componentes"] },
+              { title: "[Componentes] Criar componente `SelecionarPeriodo` para selecionar o periodo de abrangencia da \"ListaHorario\" (Figura 2)", body: "Criar componente `SelecionarPeriodo` para selecionar o periodo de abrangencia da \"ListaHorario\" (Figura 2).", labels: ["Componentes"] },
+              { title: "[Componentes] Criar componente `Combo` que receba como parametro uma lista do que vai ser mostrado", body: "Criar componente `Combo` que receba como parametro uma lista do que vai ser mostrado.", labels: ["Componentes"] },
+              { title: "[Componentes] Criar componente `CardConsulta` para exibição resumida na tela de Realização de Consulta (Figura 4)", body: "Criar componente `CardConsulta` para exibição resumida na tela de Realização de Consulta (Figura 4).", labels: ["Componentes"] },
+              { title: "[Componentes] Criar componente `CardConfirmarConsulta` para exibição resumida das consultas agendadas em lista e checkbox para confirmação (Figura 3)", body: "Criar componente `CardConfirmarConsulta` para exibição resumida das consultas agendadas em lista e checkbox para confirmação (Figura 3).", labels: ["Componentes"] },
+              // Navegação
+              { title: "[Navegação] Configurar `AppNavigator` com todas as rotas das telas de cliente e consulta", body: "Configurar `AppNavigator` com todas as rotas das telas de cliente e consulta.", labels: ["Navegação"] },
+              { title: "[Navegação] Implementar navegação na tela `Home` para os módulos principais", body: "Implementar navegação na tela `Home` para os módulos principais.", labels: ["Navegação"] },
+              { title: "[Navegação] Implementar fluxo de navegação em etapas para o processo de `MarcarConsulta`", body: "Implementar fluxo de navegação em etapas para o processo de `MarcarConsulta`.", labels: ["Navegação"] },
+              { title: "[Navegação] Implementar fluxo de navegação em etapas para o processo de `RealizarConsulta`", body: "Implementar fluxo de navegação em etapas para o processo de `RealizarConsulta`.", labels: ["Navegação"] },
+              { title: "[Navegação] Implementar redirecionamento pós-login para a tela `Home` ou para a tela \"RealizarConsulta\" (em caso de médico)", body: "Implementar redirecionamento pós-login para a tela `Home` ou para a tela \"RealizarConsulta\" (em caso de médico).", labels: ["Navegação"] },
+              { title: "[Navegação] Garantir navegação de retorno consistente (back) em todas as telas de formulário", body: "Garantir navegação de retorno consistente (back) em todas as telas de formulário.", labels: ["Navegação"] },
+              // UI - Login
+              { title: "[UI] Implementar tela `Login` com campos de usuário e senha e botão de entrada (mock)", body: "Implementar tela `Login` com campos de usuário e senha e botão de entrada (mock).", labels: ["UI"] },
+              // UI - HomeSecretaria
+              { title: "[UI] Implementar tela `HomeSecretaria` com menu de acesso aos módulos: Clientes, Marcação, Confirmação, Realização, Encerramento e Cancelamento", body: "Implementar tela `HomeSecretaria` com menu de acesso aos módulos: Clientes, Marcação, Confirmação, Realização, Encerramento e Cancelamento.", labels: ["UI"] },
+              { title: "[UI] Implementar dashboard à tela `HomeSecretaria`", body: "Implementar dashboard à tela `HomeSecretaria`.", labels: ["UI"] },
+              // UI - HomeMedico
+              { title: "[UI] Implementar tela `HomeMedico` com menu de acesso aos módulos: Realização e Cancelamento", body: "Implementar tela `HomeMedico` com menu de acesso aos módulos: Realização e Cancelamento.", labels: ["UI"] },
+              { title: "[UI] Implementar dashboard à tela `HomeMedico`", body: "Implementar dashboard à tela `HomeMedico`.", labels: ["UI"] },
+              // UI - Módulo Cliente
+              { title: "[UI] Implementar tela `ListarClientes` com busca por nome e listagem dos clientes mockados", body: "Implementar tela `ListarClientes` com busca por nome e listagem dos clientes mockados.", labels: ["UI"] },
+              { title: "[UI] Implementar tela `CadastrarCliente` com formulário completo (nome, nascimento, telefone, email, endereço)", body: "Implementar tela `CadastrarCliente` com formulário completo (nome, nascimento, telefone, email, endereço).", labels: ["UI"] },
+              { title: "[UI] Implementar fluxo de edição de cliente a partir da listagem", body: "Implementar fluxo de edição de cliente a partir da listagem.", labels: ["UI"] },
+              // UI - Marcação de Consulta
+              { title: "[UI] Implementar etapa 1 de `MarcarConsulta`: seleção de cliente existente com busca", body: "Implementar etapa 1 de `MarcarConsulta`: seleção de cliente existente com busca.", labels: ["UI"] },
+              { title: "[UI] Implementar etapa 2 de `MarcarConsulta`: seleção de médico e especialidade", body: "Implementar etapa 2 de `MarcarConsulta`: seleção de médico e especialidade.", labels: ["UI"] },
+              { title: "[UI] Implementar etapa 3 de `MarcarConsulta`: exibição da agenda com `AgendaGrid` e status dos slots", body: "Implementar etapa 3 de `MarcarConsulta`: exibição da agenda com `AgendaGrid` e status dos slots.", labels: ["UI"] },
+              { title: "[UI] Implementar etapa 4 de `MarcarConsulta`: confirmação do horário selecionado e registro da marcação", body: "Implementar etapa 4 de `MarcarConsulta`: confirmação do horário selecionado e registro da marcação.", labels: ["UI"] },
+              // UI - Confirmação de Consulta
+              { title: "[UI] Implementar tela `ConfirmarConsulta` com listagem das consultas marcadas e não confirmadas do dia, ordenadas por horário e médico", body: "Implementar tela `ConfirmarConsulta` com listagem das consultas marcadas e não confirmadas do dia, ordenadas por horário e médico.", labels: ["UI"] },
+              { title: "[UI] Implementar ação de confirmar consulta na tela `ConfirmarConsulta` com atualização de status", body: "Implementar ação de confirmar consulta na tela `ConfirmarConsulta` com atualização de status.", labels: ["UI"] },
+              // UI - Realização de Consulta
+              { title: "[UI] Implementar tela `RealizarConsulta` com listagem de pacientes confirmados para o médico", body: "Implementar tela `RealizarConsulta` com listagem de pacientes confirmados para o médico.", labels: ["UI"] },
+              { title: "[UI] Implementar formulário de realização com campos: laudo, receita médica e histórico do paciente", body: "Implementar formulário de realização com campos: laudo, receita médica e histórico do paciente.", labels: ["UI"] },
+              // UI - Encerramento de Consulta
+              { title: "[UI] Implementar tela `EncerrarConsulta` com listagem das consultas realizadas e ainda não encerradas", body: "Implementar tela `EncerrarConsulta` com listagem das consultas realizadas e ainda não encerradas.", labels: ["UI"] },
+              { title: "[UI] Implementar formulário de encerramento com campos: valor pago, tipo de pagamento e procedimentos realizados", body: "Implementar formulário de encerramento com campos: valor pago, tipo de pagamento e procedimentos realizados.", labels: ["UI"] },
+              { title: "[UI] Aplicar regra de negócio: consultas de retorno não são cobradas (campo de valor desabilitado ou zerado)", body: "Aplicar regra de negócio: consultas de retorno não são cobradas (campo de valor desabilitado ou zerado).", labels: ["UI"] },
+              // UI - Cancelamento de Consulta
+              { title: "[UI] Implementar tela `CancelarConsulta` com opção de cancelamento por solicitação do cliente, médico e por não comparecimento", body: "Implementar tela `CancelarConsulta` com opção de cancelamento por solicitação do cliente, médico e por não comparecimento.", labels: ["UI"] },
+              { title: "[UI] Implementar checkbox de motivo de cancelamento obrigatório antes de confirmar a ação", body: "Implementar checkbox de motivo de cancelamento obrigatório antes de confirmar a ação.", labels: ["UI"] },
+              // Ajustes Visuais
+              { title: "[Ajustes visuais] Implementar sistema de tokens de cor e tipografia em `TemaEscuro.tsx`", body: "Implementar sistema de tokens de cor e tipografia em `TemaEscuro.tsx`.", labels: ["Ajustes visuais"] },
+              { title: "[Ajustes visuais] Aplicar tema escuro de forma consistente em todas as telas", body: "Aplicar tema escuro de forma consistente em todas as telas.", labels: ["Ajustes visuais"] },
+              { title: "[Ajustes visuais] Garantir responsividade e legibilidade em diferentes tamanhos de tela", body: "Garantir responsividade e legibilidade em diferentes tamanhos de tela.", labels: ["Ajustes visuais"] },
+              // Integração futura
+              { title: "[Integração futura] Tipar todos os modelos com interfaces TypeScript compatíveis com a estrutura do Firestore", body: "Tipar todos os modelos com interfaces TypeScript compatíveis com a estrutura do Firestore.", labels: ["Integração futura"] },
+            ];
+            
+            const coresDasLabels = {
+              "Estado/Dados": "e4e669",
+              "Mockup": "d93f0b",
+              "Componentes": "0075ca",
+              "Navegação": "008672",
+              "UI": "e99695",
+              "Ajustes visuais": "c5def5",
+              "Integração futura": "bfd4f2"
+            };
+            
+            for (const [label, cor] of Object.entries(coresDasLabels)) {
+              try {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label,
+                  color: cor
+                });
+                console.log(`Label ${label} criada`);
+              } catch (e) {
+                if (e.status === 422) {
+                  console.log(`Label "${label}" já existe.`);
+                } else {
+                  console.log(`Erro ao criar "${label}": ${e.message}`);
+                }
+              }
+            }
+            
+            const issuesExistentes = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all',
+              per_page: 100
+            });
+
+            const titulosExistentes = new Set(issuesExistentes.map(i => i.title));
+            
+            const numerosDasIssuesCriadas = [];
+            for (const issue of listaDeIssues) {
+              if (titulosExistentes.has(issue.title)) {
+                console.log(`Issue "${issue.title}" já existe`);
+                continue;
+              }
+              try {
+                const issueCriada = await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: issue.title,
+                  body: issue.body,
+                  labels: issue.labels
+                });
+                console.log(`Issue #${issueCriada.data.number} criada: ${issue.title}`);
+                numerosDasIssuesCriadas.push({
+                  number: issueCriada.data.number,
+                  node_id: issueCriada.data.node_id
+                });
+              } catch (e) {
+                console.log(`Erro ao criar a issue "${issue.title}": ${e.message}`);
+              }
+            }
+            
+            
+            if (numerosDasIssuesCriadas.length > 0) {
+              console.log(`\nAdicionando ${numerosDasIssuesCriadas.length} issues no projeto #${numeroDoProjeto}...`);
+              try {
+                const queryProjeto = await github.graphql(`
+                  query($owner: String!, $number: Int!) {
+                    organization(login: $owner) {
+                      projectV2(number: $number) {
+                        id
+                      }
+                    }
+                  }
+                `, { owner: context.repo.owner, number: numeroDoProjeto });
+                
+                const projetoId = queryProjeto.organization?.projectV2?.id;
+                
+                if (projetoId) {
+                  for (const { number: numeroDaIssue, node_id: issueId } of numerosDasIssuesCriadas) {
+                    try {
+                      await github.graphql(`
+                        mutation($projectId: ID!, $contentId: ID!) {
+                          addProjectV2ItemById(input: { projectId: $projectId, contentId: $contentId }) {
+                            item { id }
+                          }
+                        }
+                      `, { projectId: projetoId, contentId: issueId });
+                      console.log(`Issue #${numeroDaIssue} adicionada ao projeto.`);
+                    } catch (e) {
+                      console.log(`Erro ao adicionar a issue #${numeroDaIssue} ao projeto: ${e.message}`);
+                    }
+                  }
+                } else {
+                  console.log(`Projeto #${numeroDoProjeto} não encontrado ou não acessível.`);
+                }
+              } catch (e) {
+                console.log(`Erro ao acessar o projeto ${numeroDoProjeto}: ${e.message}`);
+              }
+            }
