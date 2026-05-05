@@ -1,0 +1,1 @@
+export type Status = "L" | "M" | "C" | "X" | "B" | "R" | "OK" | "E";
