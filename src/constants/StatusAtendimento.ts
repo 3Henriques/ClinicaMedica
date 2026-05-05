@@ -4,9 +4,9 @@ export const LABEL_STATUS: Record<string, string> = {
   C: "Cancelado pelo Paciente",
   X: "Cancelado pelo Medico",
   B: "Bloqueado",
-  CONFIRMADA: "Confirmada",
-  REALIZADA: "Realizada",
-  ENCERRADA: "Encerrada",
+  OK: "Confirmada",
+  R: "Realizada",
+  E: "Encerrada",
 };
 
 export const STATUS_UI: Record<string, { fundo: string; texto: string }> = {
@@ -15,9 +15,9 @@ export const STATUS_UI: Record<string, { fundo: string; texto: string }> = {
   C: { fundo: "#7F1D1D", texto: "#FCA5A5" },
   X: { fundo: "#450A0A", texto: "#F87171" },
   B: { fundo: "#303A52", texto: "#CBD5E1" },
-  CONFIRMADA: { fundo: "#1E3A6E", texto: "#93C5FD" },
-  REALIZADA: { fundo: "#1A3A2E", texto: "#34D399" },
-  ENCERRADA: { fundo: "#2D1B69", texto: "#A78BFA" },
+  OK: { fundo: "#1E3A6E", texto: "#93C5FD" },
+  R: { fundo: "#1A3A2E", texto: "#34D399" },
+  E: { fundo: "#2D1B69", texto: "#A78BFA" },
 };
 
 export const LABEL_MOTIVO: Record<string, string> = {
