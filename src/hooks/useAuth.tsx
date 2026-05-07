@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
-import { Usuario } from "../models/Usuario";
+import { PerfilUsuario, Usuario } from "../models/Usuario";
 
 interface AuthContextType {
   usuario: Usuario | null;
-  login: (email: string, senha: string) => Promise<boolean>;
+  login: (email: string, senha: string, perfil?: PerfilUsuario) => Promise<boolean>;
   logout: () => void;
 }
 
@@ -17,10 +17,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
 
-  const login = async (email: string, senha: string): Promise<boolean> => {
+  const login = async (email: string, senha: string, perfil?: PerfilUsuario): Promise<boolean> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        const encontrado = usuarios.find((u) => u.email === email && u.senha === senha) ?? null;
+        const encontrado =
+          usuarios.find((u) => u.email === email && u.senha === senha && (!perfil || u.perfil === perfil)) ?? null;
         setUsuario(encontrado);
         resolve(Boolean(encontrado));
       }, 500);

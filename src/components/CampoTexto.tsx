@@ -8,7 +8,7 @@ export function CampoTexto({ label, valor, aoAlterar, placeholder, multiline, al
   return <View style={[styles.wrap,{width:largura}]}>
     <Text style={styles.label} accessibilityRole="text">{label}</Text>
     <View style={[styles.box, focado && styles.foco, !!erro && styles.boxErro, desabilitado && styles.desabilitado, { height: multiline ? altura : 48 }]}>
-      {iconeEsquerda}<TextInput value={valor} onChangeText={aoAlterar} placeholder={placeholder} placeholderTextColor={Cores.textoPlaceholder} editable={!desabilitado} secureTextEntry={seguro} keyboardType={teclado} multiline={multiline} style={styles.input} onFocus={() => setFocado(true)} onBlur={() => setFocado(false)} />{iconeDireita}
+      {iconeEsquerda}<TextInput value={valor} onChangeText={aoAlterar} placeholder={placeholder} placeholderTextColor={Cores.textoPlaceholder} editable={!desabilitado} secureTextEntry={!!seguro} keyboardType={teclado} multiline={!!multiline} style={styles.input} onFocus={() => setFocado(true)} onBlur={() => setFocado(false)} />{iconeDireita}
     </View>
     {!!erro && <Text style={styles.erro}>{erro}</Text>}
   </View>;
