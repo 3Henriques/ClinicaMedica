@@ -29,7 +29,6 @@ export function Home({ navigation }: Props) {
   const modulosMedico: Modulo[] = [
     { titulo: "Realizar", rota: "RealizarConsulta", icone: "stethoscope" },
     { titulo: "Cancelar", rota: "CancelarConsulta", icone: "calendar-remove" },
-    { titulo: "Medicos", rota: "ListarMedicos", icone: "doctor" },
   ];
 
   const modulos = usuario?.perfil === "MEDICO" ? modulosMedico : modulosSecretaria;
