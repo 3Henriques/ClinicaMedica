@@ -13,7 +13,7 @@ import { Combo } from "../../components/Combo";
 import { PlanilhaAgenda } from "../../components/PlanilhaAgenda";
 import { SelecionarPeriodo } from "../../components/SelecionarPeriodo";
 import { Botao } from "../../components/Botao";
-import { Cores, Espacamento, Raio, Sombra, Tipografia } from "../../styles/Tema";
+import { Espacamento, Raio, Sombra, TemaCores, Tipografia, useTema } from "../../styles/Tema";
 import { Agenda } from "../../models/Agenda";
 import { TipoConsulta } from "../../models/Consulta";
 
@@ -26,6 +26,8 @@ const hoje = () => {
 };
 
 export function MarcarConsulta({ route }: Props) {
+  const { cores } = useTema();
+  const styles = criarStyles(cores);
   const [etapa, setEtapa] = useState(1);
   const [busca, setBusca] = useState("");
   const [clienteId, setCliente] = useState<number | null>(null);
@@ -199,72 +201,72 @@ export function MarcarConsulta({ route }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const criarStyles = (cores: TemaCores) => StyleSheet.create({
 
   scroll: {
      flex: 1,
-      backgroundColor: Cores.fundoPrimario 
+      backgroundColor: cores.fundoPrimario
     },
 
   scrollContent: {
      padding: Espacamento.screen,
       paddingBottom: Espacamento.xxxl,
-       gap: Espacamento.md 
+       gap: Espacamento.md
     },
 
   t: {
      ...Tipografia.titulo,
-      color: Cores.textoPrimario 
+      color: cores.textoPrimario
     },
 
   sub: {
      ...Tipografia.corpoMedio,
-      color: Cores.textoSecundario,
-       marginBottom: Espacamento.sm 
+      color: cores.textoSecundario,
+       marginBottom: Espacamento.sm
     },
 
   gridTitulo: {
      ...Tipografia.legenda,
-      color: Cores.acentoTexto 
+      color: cores.acentoTexto
     },
 
   resumoTitulo: {
      ...Tipografia.display,
-      color: Cores.textoPrimario 
+      color: cores.textoPrimario
     },
 
   resumoSubtitulo: {
      ...Tipografia.corpoMedio,
-      color: Cores.textoSecundario
+      color: cores.textoSecundario
     },
 
   resumoCard: {
-    backgroundColor: Cores.fundoCartaoElevado,
+    backgroundColor: cores.fundoCartaoElevado,
     padding: Espacamento.xl,
     borderRadius: Raio.lg,
     borderWidth: 2,
-    borderColor: Cores.acento,
+    borderColor: cores.acento,
     gap: Espacamento.lg,
     ...Sombra.cartao,
   },
 
   resumoLinha: {
-     gap: Espacamento.xs 
+     gap: Espacamento.xs
     },
-    
+
   resumoLabel: {
      ...Tipografia.legenda,
-      color: Cores.textoSecundario 
+      color: cores.textoSecundario
     },
 
   resumoValor: {
      ...Tipografia.subtitulo,
-      color: Cores.textoPrimario 
+      color: cores.textoPrimario
     },
 
   r: {
      gap: Espacamento.sm,
-      marginTop: Espacamento.md 
+      marginTop: Espacamento.md
     },
-    
+
 });

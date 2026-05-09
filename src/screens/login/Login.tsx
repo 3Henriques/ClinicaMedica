@@ -7,7 +7,7 @@ import { CampoTexto } from "../../components/CampoTexto";
 import { Botao } from "../../components/Botao";
 import { useAuth } from "../../hooks/useAuth";
 import { PerfilUsuario } from "../../models/Usuario";
-import { Cores, Espacamento, Raio, Tipografia, touchMin } from "../../styles/Tema";
+import { Espacamento, Raio, TemaCores, Tipografia, touchMin, useTema } from "../../styles/Tema";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 type PerfilLogin = { label: string; valor: PerfilUsuario; email: string; senha: string };
@@ -19,6 +19,8 @@ const perfisLogin: PerfilLogin[] = [
 const perfilPadrao = perfisLogin[0];
 
 export function Login({ navigation }: Props) {
+  const { cores } = useTema();
+  const styles = criarStyles(cores);
   const { login } = useAuth();
   const [perfilSelecionado, setPerfilSelecionado] = useState<PerfilUsuario>(perfilPadrao.valor);
   const [email, setEmail] = useState(perfilPadrao.email);
@@ -85,31 +87,31 @@ export function Login({ navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({    
+const criarStyles = (cores: TemaCores) => StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Cores.fundoPrimario,
+        backgroundColor: cores.fundoPrimario,
         justifyContent: "center",
         padding: Espacamento.screen,
     },
 
     card: {
-        backgroundColor: Cores.fundoCartao,
+        backgroundColor: cores.fundoCartao,
         borderRadius: 12,
         padding: Espacamento.xl,
         gap: Espacamento.sm,
     },
 
-    tit: { 
-        ...Tipografia.displayGrande, 
-        color: Cores.textoPrimario, 
-        marginBottom: Espacamento.xs 
+    tit: {
+        ...Tipografia.displayGrande,
+        color: cores.textoPrimario,
+        marginBottom: Espacamento.xs
     },
 
-    subtitulo: { 
-        ...Tipografia.corpoMedio, 
-        color: Cores.textoSecundario, 
-        marginBottom: Espacamento.md 
+    subtitulo: {
+        ...Tipografia.corpoMedio,
+        color: cores.textoSecundario,
+        marginBottom: Espacamento.md
     },
 
     grupoPerfil: {
@@ -123,8 +125,8 @@ const styles = StyleSheet.create({
         minHeight: touchMin,
         borderRadius: Raio.md,
         borderWidth: 1,
-        borderColor: Cores.borda,
-        backgroundColor: Cores.fundoInput,
+        borderColor: cores.borda,
+        backgroundColor: cores.fundoInput,
         paddingHorizontal: Espacamento.md,
         alignItems: "center",
         flexDirection: "row",
@@ -132,8 +134,8 @@ const styles = StyleSheet.create({
     },
 
     opcaoPerfilSelecionada: {
-        borderColor: Cores.acento,
-        backgroundColor: Cores.acentoSuave,
+        borderColor: cores.acento,
+        backgroundColor: cores.acentoSuave,
     },
 
     radio: {
@@ -141,33 +143,33 @@ const styles = StyleSheet.create({
         height: 20,
         borderRadius: 10,
         borderWidth: 2,
-        borderColor: Cores.textoSecundario,
+        borderColor: cores.textoSecundario,
         alignItems: "center",
         justifyContent: "center",
     },
 
     radioSelecionado: {
-        borderColor: Cores.acentoTexto,
+        borderColor: cores.acentoTexto,
     },
 
     radioPonto: {
         width: 10,
         height: 10,
         borderRadius: 5,
-        backgroundColor: Cores.acentoTexto,
+        backgroundColor: cores.acentoTexto,
     },
 
     opcaoPerfilTexto: {
         ...Tipografia.subtitulo,
-        color: Cores.textoSecundario,
+        color: cores.textoSecundario,
     },
 
     opcaoPerfilTextoSelecionado: {
-        color: Cores.textoPrimario,
+        color: cores.textoPrimario,
     },
-    
-    erro: { 
-       color: Cores.erro, 
-        ...Tipografia.corpoMedio 
+
+    erro: {
+       color: cores.erro,
+        ...Tipografia.corpoMedio
     },
 });

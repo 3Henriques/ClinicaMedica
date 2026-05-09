@@ -1,10 +1,12 @@
 import React, { useMemo } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Agenda } from "../models/Agenda";
-import { Cores, Espacamento, Raio, Tipografia } from "../styles/Tema";
+import { Espacamento, Raio, TemaCores, Tipografia, useTema } from "../styles/Tema";
 import { StatusBadge } from "./StatusBadge";
 
 export function PlanilhaAgenda({ slots, slotSelecionado, aoSelecionarSlot }: { slots: Agenda[]; slotSelecionado?: Agenda | null; aoSelecionarSlot:(slot:Agenda)=>void }) {
+  const { cores } = useTema();
+  const styles = criarStyles(cores);
   const { datas, horas, mapa } = useMemo(() => {
     const ds = Array.from(new Set(slots.map((s) => s.data))).sort();
     const hs = Array.from(new Set(slots.map((s) => s.horaInicio))).sort();
@@ -52,36 +54,36 @@ export function PlanilhaAgenda({ slots, slotSelecionado, aoSelecionarSlot }: { s
     </ScrollView>
   );
 }
-const styles = StyleSheet.create({
+const criarStyles = (cores: TemaCores) => StyleSheet.create({
   row: { flexDirection: "row" },
-  head: { minWidth: 112, color: Cores.textoSecundario, padding: Espacamento.sm, ...Tipografia.legenda },
-  headSel: { color: Cores.acentoTexto, ...Tipografia.subtitulo },
+  head: { minWidth: 112, color: cores.textoSecundario, padding: Espacamento.sm, ...Tipografia.legenda },
+  headSel: { color: cores.acentoTexto, ...Tipografia.subtitulo },
   cellHora: {
     minWidth: 112,
     minHeight: 48,
     borderWidth: 1,
-    borderColor: Cores.divisor,
+    borderColor: cores.divisor,
     alignItems: "center",
     justifyContent: "center",
-    color: Cores.textoSecundario,
+    color: cores.textoSecundario,
     ...Tipografia.corpoMedio,
   },
   cell: {
     minWidth: 112,
     minHeight: 48,
     borderWidth: 1,
-    borderColor: Cores.divisor,
+    borderColor: cores.divisor,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Cores.fundoSecundario,
+    backgroundColor: cores.fundoSecundario,
   },
   cellDesabilitada: { opacity: 0.65 },
   sel: {
-    borderColor: Cores.acento,
-    backgroundColor: Cores.acentoSuave,
+    borderColor: cores.acento,
+    backgroundColor: cores.acentoSuave,
     borderRadius: Raio.md,
     borderWidth: 3,
-    shadowColor: Cores.acento,
+    shadowColor: cores.acento,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.45,
     shadowRadius: 6,

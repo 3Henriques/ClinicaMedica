@@ -4,17 +4,27 @@ import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AppNavigator } from "./src/navigation/AppNavigator";
 import { AuthProvider } from "./src/hooks/useAuth";
-import { Cores } from "./src/styles/Tema";
+import { TemaProvider, useTema } from "./src/styles/Tema";
 
-export default function App() {
+function AppContent() {
+  const { cores, modo } = useTema();
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <GestureHandlerRootView style={{ flex: 1 }}>      
         <AuthProvider>
-          <StatusBar style="light" backgroundColor={Cores.fundoPrimario} />
+          <StatusBar style={modo === "escuro" ? "light" : "dark"} backgroundColor={cores.fundoPrimario} />
           <AppNavigator />
         </AuthProvider>      
       </GestureHandlerRootView>
     </TouchableWithoutFeedback>
+  );
+}
+
+export default function App() {
+  return (
+    <TemaProvider>
+      <AppContent />
+    </TemaProvider>
   );
 }

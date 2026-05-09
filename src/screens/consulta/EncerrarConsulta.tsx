@@ -15,12 +15,14 @@ import { CardConsulta } from "../../components/CardConsulta";
 import { CampoTexto } from "../../components/CampoTexto";
 import { Combo } from "../../components/Combo";
 import { Botao } from "../../components/Botao";
-import { Cores, Espacamento, Tipografia } from "../../styles/Tema";
+import { Espacamento, TemaCores, Tipografia, useTema } from "../../styles/Tema";
 
 type Props = NativeStackScreenProps<RootStackParamList, "EncerrarConsulta">;
 
 
 export function EncerrarConsulta({ navigation, route }: Props) {
+    const { cores } = useTema();
+    const styles = criarStyles(cores);
     const insets = useSafeAreaInsets();
     const { buscarRealizadasNaoEncerradas, consultas, encerrar } = useConsulta();
     const { buscarPorId } = useCliente();
@@ -80,11 +82,11 @@ export function EncerrarConsulta({ navigation, route }: Props) {
     </View>;
 }
 
-const styles = StyleSheet.create({
-    c: { flex: 1, backgroundColor: Cores.fundoPrimario, padding: Espacamento.screen, gap: Espacamento.md },
-    t: { ...Tipografia.titulo, color: Cores.textoPrimario },
-    s: { ...Tipografia.subtitulo, color: Cores.textoPrimario, marginBottom: Espacamento.sm },
-    bloco: { backgroundColor: Cores.fundoCartao, padding: Espacamento.lg, borderRadius: 12 },
-    alerta: { backgroundColor: Cores.avisoSuave, padding: Espacamento.md, borderRadius: 8 },
-    a: { color: Cores.aviso, ...Tipografia.corpoMedio }
+const criarStyles = (cores: TemaCores) => StyleSheet.create({
+    c: { flex: 1, backgroundColor: cores.fundoPrimario, padding: Espacamento.screen, gap: Espacamento.md },
+    t: { ...Tipografia.titulo, color: cores.textoPrimario },
+    s: { ...Tipografia.subtitulo, color: cores.textoPrimario, marginBottom: Espacamento.sm },
+    bloco: { backgroundColor: cores.fundoCartao, padding: Espacamento.lg, borderRadius: 12 },
+    alerta: { backgroundColor: cores.avisoSuave, padding: Espacamento.md, borderRadius: 8 },
+    a: { color: cores.aviso, ...Tipografia.corpoMedio }
 });

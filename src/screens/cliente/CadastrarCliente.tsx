@@ -6,12 +6,14 @@ import { RootStackParamList } from "../../navigation/AppNavigator";
 import { CampoTexto } from "../../components/CampoTexto";
 import { Botao } from "../../components/Botao";
 import { useCliente } from "../../hooks/useCliente";
-import { Cores, Espacamento, Tipografia } from "../../styles/Tema";
+import { Espacamento, TemaCores, Tipografia, useTema } from "../../styles/Tema";
 
 type Props = NativeStackScreenProps<RootStackParamList, "CadastrarCliente">;
 
 
 export function CadastrarCliente({ navigation, route }: Props) {
+    const { cores } = useTema();
+    const styles = criarStyles(cores);
     const insets = useSafeAreaInsets();
 
     const { cadastrar, atualizar, buscarPorId } = useCliente();
@@ -56,10 +58,10 @@ export function CadastrarCliente({ navigation, route }: Props) {
 }
 
 
-const styles = StyleSheet.create({
-    safe: { flex: 1, backgroundColor: Cores.fundoPrimario },
+const criarStyles = (cores: TemaCores) => StyleSheet.create({
+    safe: { flex: 1, backgroundColor: cores.fundoPrimario },
     c: { flex: 1 },
     p: { padding: Espacamento.screen, gap: Espacamento.md },
-    t: { ...Tipografia.titulo, color: Cores.textoPrimario },
-    bloco: { backgroundColor: Cores.fundoCartao, padding: Espacamento.lg, borderRadius: 12 }
+    t: { ...Tipografia.titulo, color: cores.textoPrimario },
+    bloco: { backgroundColor: cores.fundoCartao, padding: Espacamento.lg, borderRadius: 12 }
 });
