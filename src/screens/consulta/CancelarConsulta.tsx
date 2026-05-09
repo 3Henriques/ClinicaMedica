@@ -9,9 +9,11 @@ import { ListaGenerica } from "../../components/ListaGenerica";
 import { CardConsulta } from "../../components/CardConsulta";
 import { Combo } from "../../components/Combo";
 import { Botao } from "../../components/Botao";
-import { Cores, Espacamento, Tipografia } from "../../styles/Tema";
+import { Espacamento, TemaCores, Tipografia, useTema } from "../../styles/Tema";
 
 export function CancelarConsulta() {
+    const { cores } = useTema();
+    const styles = criarStyles(cores);
 
     const { buscarPorStatus, cancelar } = useConsulta();
     const { buscarPorId } = useCliente();
@@ -89,10 +91,10 @@ export function CancelarConsulta() {
 }
 
 
-const styles = StyleSheet.create({
-    c: { flex: 1, backgroundColor: Cores.fundoPrimario, padding: Espacamento.screen, gap: Espacamento.md },
-    t: { ...Tipografia.titulo, color: Cores.textoPrimario },
-    sub: { ...Tipografia.subtitulo, color: Cores.textoPrimario, marginBottom: Espacamento.sm },
+const criarStyles = (cores: TemaCores) => StyleSheet.create({
+    c: { flex: 1, backgroundColor: cores.fundoPrimario, padding: Espacamento.screen, gap: Espacamento.md },
+    t: { ...Tipografia.titulo, color: cores.textoPrimario },
+    sub: { ...Tipografia.subtitulo, color: cores.textoPrimario, marginBottom: Espacamento.sm },
     modalBg: { flex: 1, justifyContent: "flex-end", backgroundColor: "rgba(0,0,0,0.45)" },
-    modal: { backgroundColor: Cores.fundoModal, padding: Espacamento.lg, borderTopLeftRadius: 12, borderTopRightRadius: 12, gap: Espacamento.sm }
+    modal: { backgroundColor: cores.fundoModal, padding: Espacamento.lg, borderTopLeftRadius: 12, borderTopRightRadius: 12, gap: Espacamento.sm }
 });

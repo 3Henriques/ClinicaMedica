@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Consulta } from "../models/Consulta";
-import { Cores, Espacamento, Raio, Sombra, Tipografia } from "../styles/Tema";
+import { Espacamento, Raio, Sombra, TemaCores, Tipografia, useTema } from "../styles/Tema";
 import { StatusBadge } from "./StatusBadge";
 
 export function CardConfirmarConsulta({ consulta, nomeCliente, nomeMedico, confirmado, aoConfirmar }:
@@ -17,6 +17,8 @@ export function CardConfirmarConsulta({ consulta, nomeCliente, nomeMedico, confi
 
 
 ) {
+    const { cores } = useTema();
+    const styles = criarStyles(cores);
 
 
     return <TouchableOpacity activeOpacity={0.75} style={[styles.card, confirmado && styles.ok]} onPress={
@@ -37,10 +39,10 @@ export function CardConfirmarConsulta({ consulta, nomeCliente, nomeMedico, confi
 }
 
 
-const styles = StyleSheet.create({
+const criarStyles = (cores: TemaCores) => StyleSheet.create({
 
     card: {
-        backgroundColor: Cores.fundoCartaoElevado,
+        backgroundColor: cores.fundoCartaoElevado,
         padding: Espacamento.lg,
         borderRadius: Raio.lg,
         ...Sombra.cartao
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
 
     ok: {
         borderWidth: 1,
-        borderColor: Cores.sucesso
+        borderColor: cores.sucesso
     },
 
     row: {
@@ -63,36 +65,36 @@ const styles = StyleSheet.create({
         height: 22,
         borderRadius: Raio.sm,
         borderWidth: 1,
-        borderColor: Cores.borda,
+        borderColor: cores.borda,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: Cores.fundoSecundario
+        backgroundColor: cores.fundoSecundario
     },
 
     marcadorOk: {
-        backgroundColor: Cores.sucessoSuave,
-        borderColor: Cores.sucesso
+        backgroundColor: cores.sucessoSuave,
+        borderColor: cores.sucesso
     },
 
     marcadorTxt: {
-        color: Cores.sucesso,
+        color: cores.sucesso,
         ...Tipografia.subtitulo
     },
 
     hora: {
         ...Tipografia.corpoMedio,
-        color: Cores.textoSecundario
+        color: cores.textoSecundario
     },
 
     nome: {
         ...Tipografia.subtitulo,
-        color: Cores.textoPrimario,
+        color: cores.textoPrimario,
         flex: 1
     },
 
     txt: {
         ...Tipografia.corpoMedio,
-        color: Cores.textoSecundario,
+        color: cores.textoSecundario,
         flex: 1
     }
 });

@@ -1,4 +1,6 @@
-export const Cores = {
+import React, { createContext, useContext, useMemo, useState } from "react";
+
+export const CoresEscuro = {
   fundoPrimario: "#0D1117",
   fundoSecundario: "#161B26",
   fundoCartao: "#1E2436",
@@ -24,6 +26,68 @@ export const Cores = {
   borda: "#2A3350",
   divisor: "#1E2845",
 };
+
+export const CoresClaro: typeof CoresEscuro = {
+  fundoPrimario: "#F4F7FB",
+  fundoSecundario: "#FFFFFF",
+  fundoCartao: "#FFFFFF",
+  fundoCartaoElevado: "#F8FAFC",
+  fundoInput: "#EEF2F7",
+  fundoModal: "#FFFFFF",
+  fundoHover: "#E6EDF6",
+  acento: "#2563EB",
+  acentoHover: "#1D4ED8",
+  acentoSuave: "#DBEAFE",
+  acentoTexto: "#1D4ED8",
+  textoPrimario: "#0F172A",
+  textoSecundario: "#475569",
+  textoDesabilitado: "#94A3B8",
+  textoPlaceholder: "#94A3B8",
+  sucesso: "#16A34A",
+  sucessoSuave: "#DCFCE7",
+  erro: "#DC2626",
+  erroSuave: "#FEE2E2",
+  aviso: "#D97706",
+  avisoSuave: "#FEF3C7",
+  info: "#0891B2",
+  borda: "#CBD5E1",
+  divisor: "#E2E8F0",
+};
+
+export const Cores = CoresEscuro;
+
+export type TemaModo = "claro" | "escuro";
+export type TemaCores = typeof CoresEscuro;
+
+type TemaContextType = {
+  modo: TemaModo;
+  cores: TemaCores;
+  alternarTema: () => void;
+};
+
+const TemaContext = createContext<TemaContextType | undefined>(undefined);
+
+export function TemaProvider({ children }: { children: React.ReactNode }) {
+  const [modo, setModo] = useState<TemaModo>("escuro");
+  const cores = modo === "escuro" ? CoresEscuro : CoresClaro;
+
+  const value = useMemo(
+    () => ({
+      modo,
+      cores,
+      alternarTema: () => setModo((atual) => (atual === "escuro" ? "claro" : "escuro")),
+    }),
+    [cores, modo]
+  );
+
+  return <TemaContext.Provider value={value}>{children}</TemaContext.Provider>;
+}
+
+export function useTema() {
+  const context = useContext(TemaContext);
+  if (!context) throw new Error("useTema precisa estar dentro de TemaProvider");
+  return context;
+}
 
 export const StatusCores: Record<string, { fundo: string; texto: string; rotulo: string }> = {
   L: { fundo: "#1E3A6E", texto: "#93C5FD", rotulo: "Livre" },

@@ -14,11 +14,13 @@ import { ListaGenerica } from "../../components/ListaGenerica";
 import { CardConsulta } from "../../components/CardConsulta";
 import { CampoTexto } from "../../components/CampoTexto";
 import { Botao } from "../../components/Botao";
-import { Cores, Espacamento, Tipografia } from "../../styles/Tema";
+import { Espacamento, TemaCores, Tipografia, useTema } from "../../styles/Tema";
 
 type Props = NativeStackScreenProps<RootStackParamList, "RealizarConsulta">;
 
 export function RealizarConsulta({ navigation, route }: Props) {
+  const { cores } = useTema();
+  const styles = criarStyles(cores);
   const { usuario } = useAuth();
   const { buscarConfirmadasHojePorMedico, consultas, realizar } = useConsulta();
   const { buscarPorId } = useCliente();
@@ -93,31 +95,31 @@ export function RealizarConsulta({ navigation, route }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const criarStyles = (cores: TemaCores) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Cores.fundoPrimario,
+    backgroundColor: cores.fundoPrimario,
     padding: Espacamento.screen,
     gap: Espacamento.md,
   },
 
   titulo: {
     ...Tipografia.titulo,
-    color: Cores.textoPrimario,
+    color: cores.textoPrimario,
   },
 
   nome: {
     ...Tipografia.subtitulo,
-    color: Cores.textoPrimario,
+    color: cores.textoPrimario,
   },
 
   subtitulo: {
     ...Tipografia.corpoMedio,
-    color: Cores.textoSecundario,
+    color: cores.textoSecundario,
   },
 
   cardPaciente: {
-    backgroundColor: Cores.fundoCartao,
+    backgroundColor: cores.fundoCartao,
     padding: Espacamento.lg,
     borderRadius: 12,
     gap: Espacamento.xs,

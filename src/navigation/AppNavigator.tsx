@@ -1,4 +1,5 @@
 import React from "react";
+import { StyleSheet, Switch, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Login } from "../screens/login/Login";
@@ -12,7 +13,7 @@ import { EncerrarConsulta } from "../screens/consulta/EncerrarConsulta";
 import { CancelarConsulta } from "../screens/consulta/CancelarConsulta";
 import { ListarMedicos } from "../screens/medico/ListarMedicos";
 import { PerfilMedico } from "../screens/medico/PerfilMedico";
-import { Cores, Tipografia } from "../styles/Tema";
+import { Tipografia, useTema } from "../styles/Tema";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -31,18 +32,48 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function AppNavigator() {
+  const { alternarTema, cores, modo } = useTema();
+  const navigationTheme = {
+    dark: modo === "escuro",
+    colors: {
+      primary: cores.acento,
+      background: cores.fundoPrimario,
+      card: cores.fundoSecundario,
+      text: cores.textoPrimario,
+      border: cores.borda,
+      notification: cores.acento,
+    },
+    fonts: {
+      regular: { fontFamily: "System", fontWeight: "400" as const },
+      medium: { fontFamily: "System", fontWeight: "500" as const },
+      bold: { fontFamily: "System", fontWeight: "700" as const },
+      heavy: { fontFamily: "System", fontWeight: "700" as const },
+    },
+  };
+
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={navigationTheme}>
       <Stack.Navigator
         screenOptions={{
-          headerStyle: { backgroundColor: Cores.fundoSecundario },
+          headerStyle: { backgroundColor: cores.fundoSecundario },
           headerTitleStyle: { ...Tipografia.subtitulo },
-          headerTintColor: Cores.textoPrimario,
-          contentStyle: { backgroundColor: Cores.fundoPrimario },
+          headerTintColor: cores.textoPrimario,
+          contentStyle: { backgroundColor: cores.fundoPrimario },
+          headerRight: () => (
+            <View style={[styles.switchWrap, { borderColor: cores.borda, backgroundColor: cores.fundoInput }]}>
+              <Switch
+                value={modo === "claro"}
+                onValueChange={alternarTema}
+                trackColor={{ false: "#475569", true: cores.acento }}
+                thumbColor={modo === "claro" ? "#FFFFFF" : "#CBD5E1"}
+                ios_backgroundColor="#475569"
+              />
+            </View>
+          ),
         }}
       >
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={Home} options={{ title: "Inicio" }} />
         <Stack.Screen name="ListarClientes" component={ListarClientes} options={{ title: "Clientes" }} />
         <Stack.Screen name="CadastrarCliente" component={CadastrarCliente} options={{ title: "Cliente" }} />
         <Stack.Screen name="MarcarConsulta" component={MarcarConsulta} options={{ title: "Marcar Consulta" }} />
@@ -56,3 +87,12 @@ export function AppNavigator() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  switchWrap: {
+    borderWidth: 1,
+    borderRadius: 999,
+    paddingHorizontal: 2,
+    paddingVertical: 1,
+  },
+});

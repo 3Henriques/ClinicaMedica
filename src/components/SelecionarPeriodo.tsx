@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { Cores, Espacamento, Raio, Tipografia, touchMin } from "../styles/Tema";
+import { Espacamento, Raio, TemaCores, Tipografia, touchMin, useTema } from "../styles/Tema";
 
 const toDate = (s: string) => new Date(`${s}T00:00:00`);
 const fmt = (d: Date) =>
@@ -34,6 +34,8 @@ export function SelecionarPeriodo({
   aoAlterarInicio: (d: string) => void;
   aoAlterarFim: (d: string) => void;
 }) {
+  const { cores } = useTema();
+  const styles = criarStyles(cores);
   const [campo, setCampo] = useState<"inicio" | "fim" | null>(null);
 
   const erro = useMemo(() => {
@@ -73,7 +75,7 @@ export function SelecionarPeriodo({
           accessibilityRole="button"
           accessibilityLabel="Mes anterior"
         >
-          <MaterialCommunityIcons name="chevron-left" size={28} color={Cores.textoPrimario} />
+          <MaterialCommunityIcons name="chevron-left" size={28} color={cores.textoPrimario} />
         </TouchableOpacity>
         <Text style={styles.mesTitulo}>{refMes}</Text>
         <TouchableOpacity
@@ -82,7 +84,7 @@ export function SelecionarPeriodo({
           accessibilityRole="button"
           accessibilityLabel="Proximo mes"
         >
-          <MaterialCommunityIcons name="chevron-right" size={28} color={Cores.textoPrimario} />
+          <MaterialCommunityIcons name="chevron-right" size={28} color={cores.textoPrimario} />
         </TouchableOpacity>
       </View>
 
@@ -114,17 +116,17 @@ export function SelecionarPeriodo({
   );
 }
 
-const styles = StyleSheet.create({
-  dica: { ...Tipografia.legenda, color: Cores.textoSecundario, marginBottom: Espacamento.sm },
+const criarStyles = (cores: TemaCores) => StyleSheet.create({
+  dica: { ...Tipografia.legenda, color: cores.textoSecundario, marginBottom: Espacamento.sm },
   navMes: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: Espacamento.md,
-    backgroundColor: Cores.fundoSecundario,
+    backgroundColor: cores.fundoSecundario,
     borderRadius: Raio.md,
     borderWidth: 1,
-    borderColor: Cores.borda,
+    borderColor: cores.borda,
     paddingHorizontal: Espacamento.xs,
   },
   navBtn: {
@@ -133,12 +135,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  mesTitulo: { ...Tipografia.subtitulo, color: Cores.textoPrimario, flex: 1, textAlign: "center" },
+  mesTitulo: { ...Tipografia.subtitulo, color: cores.textoPrimario, flex: 1, textAlign: "center" },
   row: { flexDirection: "row", gap: Espacamento.sm, marginBottom: Espacamento.sm },
   bt: {
     flex: 1,
-    backgroundColor: Cores.fundoInput,
-    borderColor: Cores.borda,
+    backgroundColor: cores.fundoInput,
+    borderColor: cores.borda,
     borderWidth: 1,
     borderRadius: Raio.md,
     minHeight: touchMin + 8,
@@ -146,7 +148,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Espacamento.md,
     paddingVertical: Espacamento.sm,
   },
-  rotuloPicker: { ...Tipografia.legenda, color: Cores.textoSecundario, marginBottom: Espacamento.xs },
-  txt: { color: Cores.textoPrimario, ...Tipografia.corpo },
-  erro: { color: Cores.erro, ...Tipografia.legenda },
+  rotuloPicker: { ...Tipografia.legenda, color: cores.textoSecundario, marginBottom: Espacamento.xs },
+  txt: { color: cores.textoPrimario, ...Tipografia.corpo },
+  erro: { color: cores.erro, ...Tipografia.legenda },
 });

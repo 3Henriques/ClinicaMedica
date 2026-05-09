@@ -9,9 +9,11 @@ import { useMedico } from "../../hooks/useMedico";
 import { ListaGenerica } from "../../components/ListaGenerica";
 import { CardConfirmarConsulta } from "../../components/CardConfirmarConsulta";
 import { Botao } from "../../components/Botao";
-import { Cores, Espacamento, Tipografia } from "../../styles/Tema";
+import { Espacamento, TemaCores, Tipografia, useTema } from "../../styles/Tema";
 
 export function ConfirmarConsulta() {
+    const { cores } = useTema();
+    const styles = criarStyles(cores);
     const { buscarNaoConfirmadasHoje, confirmar } = useConsulta();
     const { buscarPorId } = useCliente();
     const { buscarNome } = useMedico();
@@ -54,9 +56,9 @@ export function ConfirmarConsulta() {
         </View>
     </View>;
 }
-const styles = StyleSheet.create({
-    c: { flex: 1, backgroundColor: Cores.fundoPrimario, padding: Espacamento.screen },
-    t: { ...Tipografia.titulo, color: Cores.textoPrimario },
-    sub: { ...Tipografia.corpoMedio, color: Cores.textoSecundario, marginTop: Espacamento.xs, marginBottom: Espacamento.md },
+const criarStyles = (cores: TemaCores) => StyleSheet.create({
+    c: { flex: 1, backgroundColor: cores.fundoPrimario, padding: Espacamento.screen },
+    t: { ...Tipografia.titulo, color: cores.textoPrimario },
+    sub: { ...Tipografia.corpoMedio, color: cores.textoSecundario, marginTop: Espacamento.xs, marginBottom: Espacamento.md },
     rodape: { paddingTop: Espacamento.sm }
 });

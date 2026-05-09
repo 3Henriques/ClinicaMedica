@@ -10,12 +10,14 @@ import { RootStackParamList } from "../../navigation/AppNavigator";
 import { useCliente } from "../../hooks/useCliente";
 import { CampoTexto } from "../../components/CampoTexto";
 import { ListaGenerica } from "../../components/ListaGenerica";
-import { Cores, Espacamento, Raio, Tipografia } from "../../styles/Tema";
+import { Espacamento, Raio, TemaCores, Tipografia, useTema } from "../../styles/Tema";
 
 type Props = NativeStackScreenProps<RootStackParamList, "ListarClientes">;
 
 
 export function ListarClientes({ navigation }: Props) {
+    const { cores } = useTema();
+    const styles = criarStyles(cores);
     const [termo, setTermo] = useState("");
     const insets = useSafeAreaInsets();
     const { buscarPorNome } = useCliente();
@@ -36,10 +38,10 @@ export function ListarClientes({ navigation }: Props) {
     </View>;
 }
 
-const styles = StyleSheet.create({
-    c: { flex: 1, backgroundColor: Cores.fundoPrimario, padding: Espacamento.screen, marginVertical: Espacamento.md },
-    t: { ...Tipografia.titulo, color: Cores.textoPrimario },
-    card: { backgroundColor: Cores.fundoCartao, padding: Espacamento.lg, borderRadius: Raio.lg },
-    nome: { ...Tipografia.subtitulo, color: Cores.textoPrimario, marginBottom: Espacamento.xs },
-    txt: { ...Tipografia.corpoMedio, color: Cores.textoSecundario }
+const criarStyles = (cores: TemaCores) => StyleSheet.create({
+    c: { flex: 1, backgroundColor: cores.fundoPrimario, padding: Espacamento.screen, marginVertical: Espacamento.md },
+    t: { ...Tipografia.titulo, color: cores.textoPrimario },
+    card: { backgroundColor: cores.fundoCartao, padding: Espacamento.lg, borderRadius: Raio.lg },
+    nome: { ...Tipografia.subtitulo, color: cores.textoPrimario, marginBottom: Espacamento.xs },
+    txt: { ...Tipografia.corpoMedio, color: cores.textoSecundario }
 });
