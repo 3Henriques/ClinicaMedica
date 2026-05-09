@@ -67,33 +67,89 @@ export function Home({ navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: Cores.fundoPrimario },
-  p: { padding: Espacamento.screen, paddingBottom: Espacamento.xxxl, gap: Espacamento.section },
-  top: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: Espacamento.md },
-  saudacao: { flex: 1, gap: Espacamento.xs },
-  ola: { ...Tipografia.corpo, color: Cores.textoSecundario },
-  nome: { ...Tipografia.display, color: Cores.textoPrimario },
-  destaque: {
-    backgroundColor: Cores.fundoCartaoElevado,
-    borderRadius: 12,
-    paddingVertical: Espacamento.lg,
-    paddingHorizontal: Espacamento.xl,
-    borderWidth: 1,
-    borderColor: Cores.borda,
-  },
-  statLabel: { ...Tipografia.legenda, color: Cores.textoSecundario, textTransform: "uppercase", letterSpacing: 0.8 },
-  statValor: { ...Tipografia.displayGrande, color: Cores.textoPrimario, marginTop: Espacamento.xs },
-  secaoTitulo: { ...Tipografia.subtitulo, color: Cores.textoSecundario },
-  grid: { gap: Espacamento.lg },
-  card: {
-    backgroundColor: Cores.fundoCartao,
-    padding: Espacamento.lg,
-    borderRadius: 12,
-    gap: Espacamento.md,
-    minHeight: touchMin + 56,
-    borderWidth: 1,
-    borderColor: Cores.divisor,
-  },
-  cardHeader: { flexDirection: "row", alignItems: "center", gap: Espacamento.md },
-  tx: { ...Tipografia.titulo, color: Cores.textoPrimario, flex: 1 },
+    c: { 
+        flex: 1,
+        backgroundColor: Cores.fundoPrimario
+    },
+
+    p: { 
+        padding: Espacamento.screen,
+        paddingBottom: Espacamento.xxxl,
+        gap: Espacamento.section
+    },
+    
+    top: { 
+        flexDirection: "row", 
+        justifyContent: "space-between", 
+        alignItems: "flex-start", 
+        gap: Espacamento.md
+    },
+    
+    saudacao: { 
+        flex: 1, 
+        gap: Espacamento.xs 
+    },
+    
+    ola: { 
+        ...Tipografia.corpo, 
+        color: Cores.textoSecundario 
+    },
+    
+    nome: { 
+        ...Tipografia.display, 
+        color: Cores.textoPrimario 
+    },
+    
+    destaque: {
+        backgroundColor: Cores.fundoCartaoElevado,
+        borderRadius: 12,
+        paddingVertical: Espacamento.lg,
+        paddingHorizontal: Espacamento.xl,
+        borderWidth: 1,
+        borderColor: Cores.borda,
+    },
+    
+    statLabel: { 
+        ...Tipografia.legenda, 
+        color: Cores.textoSecundario, 
+        textTransform: "uppercase", 
+        letterSpacing: 0.8 
+    },
+    
+    statValor: { 
+        ...Tipografia.displayGrande, 
+        color: Cores.textoPrimario, 
+        marginTop: Espacamento.xs 
+    },
+    
+    secaoTitulo: { 
+        ...Tipografia.subtitulo, 
+        color: Cores.textoSecundario 
+    },
+    
+    grid: { 
+        gap: Espacamento.lg 
+    },
+    
+    card: {
+        backgroundColor: Cores.fundoCartao,
+        padding: Espacamento.lg,
+        borderRadius: 12,
+        gap: Espacamento.md,
+        minHeight: touchMin + 56,
+        borderWidth: 1,
+        borderColor: Cores.divisor,
+    },
+    
+    cardHeader: { 
+        flexDirection: "row", 
+        alignItems: "center", 
+        gap: Espacamento.md 
+    },
+    
+    tx: { 
+        ...Tipografia.titulo, 
+        color: Cores.textoPrimario, 
+        flex: 1 
+    },
 });
