@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Modal, StyleSheet, Text, View } from "react-native";
+import { Keyboard, Modal, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import { useConsulta } from "../../hooks/useConsulta";
 import { useCliente } from "../../hooks/useCliente";
 import { useMedico } from "../../hooks/useMedico";
@@ -44,44 +44,46 @@ export function CancelarConsulta() {
             }
         />
         <Modal visible={num !== null} transparent animationType="slide">
-            <View style={styles.modalBg}>
-                <View style={styles.modal}>
-                    <Text style={styles.sub}>Motivo do cancelamento</Text>
-                    <Combo
-                        label="Motivo"
-                        itens={[
-                            { label: "Solicitacao do Cliente", value: "SOLICITACAO_CLIENTE" },
-                            { label: "Solicitacao do Medico", value: "SOLICITACAO_MEDICO" },
-                            { label: "Nao Comparecimento", value: "NAO_COMPARECIMENTO" }
-                        ]} valor={motivo} onSelecionar={setMotivo}
-                    />
-                    <CampoTexto
-                        label="Observacao"
-                        valor={obs}
-                        aoAlterar={setObs}
-                        multiline altura={72}
-                    />
-                    <Botao
-                        titulo="Confirmar Cancelamento"
-                        variante="perigo"
-                        onPress={async () => {
-                            if (num && motivo) {
-                                await cancelar(num, motivo as any, obs);
-                                setNum(null); setMotivo(null);
-                                setObs("");
-                            }
-                        }}
-                        desabilitado={!motivo}
-                        larguraTotal
-                    />
-                    <Botao
-                        titulo="Voltar"
-                        variante="ghost"
-                        onPress={() => setNum(null)}
-                        larguraTotal
-                    />
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                <View style={styles.modalBg}>
+                    <View style={styles.modal}>
+                        <Text style={styles.sub}>Motivo do cancelamento</Text>
+                        <Combo
+                            label="Motivo"
+                            itens={[
+                                { label: "Solicitacao do Cliente", value: "SOLICITACAO_CLIENTE" },
+                                { label: "Solicitacao do Medico", value: "SOLICITACAO_MEDICO" },
+                                { label: "Nao Comparecimento", value: "NAO_COMPARECIMENTO" }
+                            ]} valor={motivo} onSelecionar={setMotivo}
+                        />
+                        <CampoTexto
+                            label="Observacao"
+                            valor={obs}
+                            aoAlterar={setObs}
+                            multiline altura={72}
+                        />
+                        <Botao
+                            titulo="Confirmar Cancelamento"
+                            variante="perigo"
+                            onPress={async () => {
+                                if (num && motivo) {
+                                    await cancelar(num, motivo as any, obs);
+                                    setNum(null); setMotivo(null);
+                                    setObs("");
+                                }
+                            }}
+                            desabilitado={!motivo}
+                            larguraTotal
+                        />
+                        <Botao
+                            titulo="Voltar"
+                            variante="ghost"
+                            onPress={() => setNum(null)}
+                            larguraTotal
+                        />
+                    </View>
                 </View>
-            </View>
+            </TouchableWithoutFeedback>
         </Modal>
     </View>;
 }
