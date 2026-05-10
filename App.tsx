@@ -1,5 +1,5 @@
 import React from "react";
-import { Keyboard, ScrollView, TouchableWithoutFeedback } from "react-native";
+import { Keyboard, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -15,7 +15,6 @@ function AppContent() {
       contentContainerStyle={{ flexGrow: 1 }}
       keyboardShouldPersistTaps="handled"
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <SafeAreaProvider>
             <AuthProvider>
@@ -27,7 +26,6 @@ function AppContent() {
             </AuthProvider>
           </SafeAreaProvider>
         </GestureHandlerRootView>
-      </TouchableWithoutFeedback>
     </ScrollView>
   );
 }
