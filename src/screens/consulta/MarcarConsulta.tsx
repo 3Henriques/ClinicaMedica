@@ -104,17 +104,15 @@ export function MarcarConsulta({ route, navigation }: Props) {
             onPress={() => navigation.navigate("CadastrarCliente", {})}
             larguraTotal
           />
-          <ListaGenerica
-            dados={clientes}
-            renderItem={(c) => (
-              <Botao
-                titulo={c.nome}
-                variante={clienteId === c.identificador ? "primario" : "secundario"}
-                onPress={() => setCliente(c.identificador)}
-                larguraTotal
-              />
-            )}
-          />
+          {clientes.map((c) => (
+            <Botao
+              key={c.identificador}
+              titulo={c.nome}
+              variante={clienteId === c.identificador ? "primario" : "secundario"}
+              onPress={() => setCliente(c.identificador)}
+              larguraTotal
+            />
+          ))}
           <Botao titulo="Avancar" onPress={() => setEtapa(2)} desabilitado={!clienteId} larguraTotal />
           {clienteId && (
             <Botao
