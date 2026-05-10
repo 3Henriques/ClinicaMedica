@@ -1,7 +1,8 @@
 import React from "react";
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { RootStackParamList } from "../../navigation/AppNavigator";
 import { useAuth } from "../../hooks/useAuth";
 import { useConsulta } from "../../hooks/useConsulta";
@@ -14,7 +15,8 @@ type Modulo = { titulo: string; rota: keyof RootStackParamList; icone: keyof typ
 
 export function Home({ navigation }: Props) {
   const { cores } = useTema();
-  const styles = criarStyles(cores);
+  const insets = useSafeAreaInsets();
+  const styles = criarStyles(cores, insets);
   const { usuario, logout } = useAuth();
   const consulta = useConsulta();
 
@@ -36,7 +38,7 @@ export function Home({ navigation }: Props) {
   const modulos = usuario?.perfil === "MEDICO" ? modulosMedico : modulosSecretaria;
 
   return (
-    <SafeAreaView style={styles.c}>
+    <View style={styles.c}>
       <ScrollView contentContainerStyle={styles.p} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         <View style={styles.top}>
           <View style={styles.saudacao}>
@@ -64,14 +66,16 @@ export function Home({ navigation }: Props) {
           ))}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
-const criarStyles = (cores: TemaCores) => StyleSheet.create({
+const criarStyles = (cores: TemaCores, insets: { top: number; bottom: number }) => StyleSheet.create({
     c: {
         flex: 1,
-        backgroundColor: cores.fundoPrimario
+        backgroundColor: cores.fundoPrimario,
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom
     },
 
     p: {
