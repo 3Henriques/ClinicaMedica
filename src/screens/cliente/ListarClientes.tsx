@@ -10,6 +10,7 @@ import { RootStackParamList } from "../../navigation/AppNavigator";
 import { useCliente } from "../../hooks/useCliente";
 import { CampoTexto } from "../../components/CampoTexto";
 import { ListaGenerica } from "../../components/ListaGenerica";
+import { Botao } from "../../components/Botao";
 import { Espacamento, Raio, TemaCores, Tipografia, useTema } from "../../styles/Tema";
 
 type Props = NativeStackScreenProps<RootStackParamList, "ListarClientes">;
@@ -23,6 +24,9 @@ export function ListarClientes({ navigation }: Props) {
     const { buscarPorNome } = useCliente();
     const dados = buscarPorNome(termo);
     return <View style={[styles.c, { paddingTop: insets.top + Espacamento.screen, paddingBottom: insets.bottom + Espacamento.screen }]}>
+        <View>
+            <Botao titulo="Novo Cliente" onPress={() => navigation.navigate("CadastrarCliente")} />
+        </View>
         <Text style={styles.t}>Clientes</Text>
         <CampoTexto label="Buscar" valor={termo} aoAlterar={setTermo} placeholder="Buscar por nome..." />
         <ListaGenerica
