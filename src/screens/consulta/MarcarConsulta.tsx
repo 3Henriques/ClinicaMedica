@@ -25,7 +25,20 @@ const hoje = () => {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 };
 
-export function MarcarConsulta({ route }: Props) {
+const primeiroDiaMes = () => {
+  const d = new Date();
+  const p = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-01`;
+};
+
+const ultimoDiaMes = () => {
+  const d = new Date();
+  const ultimo = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+  const p = (n: number) => String(n).padStart(2, "0");
+  return `${ultimo.getFullYear()}-${p(ultimo.getMonth() + 1)}-${p(ultimo.getDate())}`;
+};
+
+export function MarcarConsulta({ route, navigation }: Props) {
   const { cores } = useTema();
   const styles = criarStyles(cores);
   const [etapa, setEtapa] = useState(1);
@@ -34,8 +47,8 @@ export function MarcarConsulta({ route }: Props) {
   const [medicoId, setMedico] = useState<number | null>(null);
   const [espId, setEsp] = useState<number | null>(null);
   const [tipo, setTipo] = useState<string | number>("NOVA");
-  const [ini, setIni] = useState(hoje());
-  const [fim, setFim] = useState(hoje());
+  const [ini, setIni] = useState(primeiroDiaMes());
+  const [fim, setFim] = useState(ultimoDiaMes());
   const [slot, setSlot] = useState<Agenda | null>(null);
   const [carregando, setCarregando] = useState(false);
 
@@ -85,6 +98,12 @@ export function MarcarConsulta({ route }: Props) {
       {etapa === 1 && (
         <>
           <CampoTexto label="Buscar cliente" valor={busca} aoAlterar={setBusca} />
+          <Botao
+            titulo="+ Cadastrar novo cliente"
+            variante="primario"
+            onPress={() => navigation.navigate("CadastrarCliente", {})}
+            larguraTotal
+          />
           <ListaGenerica
             dados={clientes}
             renderItem={(c) => (
@@ -97,6 +116,14 @@ export function MarcarConsulta({ route }: Props) {
             )}
           />
           <Botao titulo="Avancar" onPress={() => setEtapa(2)} desabilitado={!clienteId} larguraTotal />
+          {clienteId && (
+            <Botao
+              titulo="Editar dados do cliente selecionado"
+              variante="ghost"
+              onPress={() => navigation.navigate("CadastrarCliente", { clienteIdParaEditar: clienteId })}
+              larguraTotal
+            />
+          )}
         </>
       )}
 
@@ -113,6 +140,7 @@ export function MarcarConsulta({ route }: Props) {
             itens={medicos.map((m) => ({ label: `Dr(a). ${m.nome}`, value: m.matricula }))}
             valor={medicoId}
             onSelecionar={(v) => setMedico(Number(v))}
+            desabilitado={!espId}
           />
           <Combo
             label="Tipo"
@@ -190,7 +218,9 @@ export function MarcarConsulta({ route }: Props) {
                 });
                 atualizarStatus(slot.id, "M");
                 setCarregando(false);
-                Alert.alert("Sucesso", "Consulta marcada");
+                Alert.alert("Sucesso", "Consulta marcada com sucesso!", [
+                  { text: "OK", onPress: () => navigation.navigate("Home") },
+                ]);
               }}
               larguraTotal
             />
