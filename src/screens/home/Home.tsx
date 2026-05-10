@@ -37,7 +37,7 @@ export function Home({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.c}>
-      <ScrollView contentContainerStyle={styles.p}>
+      <ScrollView contentContainerStyle={styles.p} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         <View style={styles.top}>
           <View style={styles.saudacao}>
             <Text style={styles.ola}>Ola,</Text>
@@ -75,6 +75,7 @@ const criarStyles = (cores: TemaCores) => StyleSheet.create({
     },
 
     p: {
+      flexGrow: 1,
         padding: Espacamento.screen,
         paddingBottom: Espacamento.xxxl,
         gap: Espacamento.section
