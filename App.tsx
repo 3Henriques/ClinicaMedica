@@ -1,5 +1,5 @@
 import React from "react";
-import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import { Keyboard, ScrollView, TouchableWithoutFeedback } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -11,16 +11,24 @@ function AppContent() {
   const { cores, modo } = useTema();
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <SafeAreaProvider>
-          <AuthProvider>
-            <StatusBar style={modo === "escuro" ? "light" : "dark"} backgroundColor={cores.fundoPrimario} />
-            <AppNavigator />
-          </AuthProvider>
-        </SafeAreaProvider>
-      </GestureHandlerRootView>
-    </TouchableWithoutFeedback>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      keyboardShouldPersistTaps="handled"
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <SafeAreaProvider>
+            <AuthProvider>
+              <StatusBar
+                style={modo === "escuro" ? "light" : "dark"}
+                backgroundColor={cores.fundoPrimario}
+              />
+              <AppNavigator />
+            </AuthProvider>
+          </SafeAreaProvider>
+        </GestureHandlerRootView>
+      </TouchableWithoutFeedback>
+    </ScrollView>
   );
 }
 
