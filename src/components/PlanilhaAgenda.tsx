@@ -4,6 +4,10 @@ import { Agenda } from "../models/Agenda";
 import { Espacamento, Raio, TemaCores, Tipografia, useTema } from "../styles/Tema";
 import { StatusBadge } from "./StatusBadge";
 
+const COL_HORA = 72;
+const COL_DATA = 112;
+const ALTURA_LINHA = 48;
+
 export function PlanilhaAgenda({ slots, slotSelecionado, aoSelecionarSlot }: { slots: Agenda[]; slotSelecionado?: Agenda | null; aoSelecionarSlot:(slot:Agenda)=>void }) {
   const { cores } = useTema();
   const styles = criarStyles(cores);
@@ -15,68 +19,90 @@ export function PlanilhaAgenda({ slots, slotSelecionado, aoSelecionarSlot }: { s
     return { datas: ds, horas: hs, mapa: m };
   }, [slots]);
   const dataSel = slotSelecionado?.data;
+
+  if (slots.length === 0) {
+    return <View style={styles.vazio}><Text style={styles.vazioTxt}>Nenhum horario disponivel neste periodo</Text></View>;
+  }
+
   return (
-    <ScrollView horizontal nestedScrollEnabled>
-      <View>
-        <View style={styles.row}>
-          <Text style={styles.head}>Hora</Text>
-          {datas.map((d) => (
-            <Text key={d} style={[styles.head, dataSel === d && styles.headSel]}>
-              {d}
-            </Text>
-          ))}
-        </View>
-        <ScrollView nestedScrollEnabled>
-          {horas.map((h) => (
-            <View key={h} style={styles.row}>
-              <Text style={styles.cellHora}>{h}</Text>
-              {datas.map((d) => {
-                const slot = mapa[d]?.[h];
-                if (!slot) return <View key={d + h} style={styles.cell} />;
-                const click = ["L", "C"].includes(slot.status);
-                const sel = slotSelecionado?.id === slot.id;
-                return (
-                  <TouchableOpacity
-                    key={d + h}
-                    activeOpacity={0.75}
-                    disabled={!click}
-                    onPress={() => aoSelecionarSlot(slot)}
-                    style={[styles.cell, !click && styles.cellDesabilitada, sel && styles.sel]}
-                  >
-                    <StatusBadge status={slot.status} tamanho="sm" />
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          ))}
-        </ScrollView>
+    <View style={styles.container}>
+      {/* Coluna de horas — fixa (não rola horizontalmente) */}
+      <View style={styles.colunaHoras}>
+        <View style={[styles.cell, styles.cabecalhoHora]} />
+        {horas.map((h) => (
+          <View key={h} style={[styles.cell, styles.cellHoraWrap]}>
+            <Text style={styles.cellHoraTxt}>{h}</Text>
+          </View>
+        ))}
       </View>
-    </ScrollView>
+
+      {/* Área de dados — rola horizontalmente */}
+      <ScrollView horizontal nestedScrollEnabled showsHorizontalScrollIndicator>
+        <View>
+          {/* Cabeçalho de datas */}
+          <View style={styles.row}>
+            {datas.map((d) => (
+              <View key={d} style={styles.cell}>
+                <Text style={[styles.head, dataSel === d && styles.headSel]} numberOfLines={1}>{d}</Text>
+              </View>
+            ))}
+          </View>
+          {/* Linhas de horários */}
+          <ScrollView nestedScrollEnabled>
+            {horas.map((h) => (
+              <View key={h} style={styles.row}>
+                {datas.map((d) => {
+                  const slot = mapa[d]?.[h];
+                  if (!slot) return <View key={d + h} style={styles.cell} />;
+                  const click = ["L", "C"].includes(slot.status);
+                  const sel = slotSelecionado?.id === slot.id;
+                  return (
+                    <TouchableOpacity
+                      key={d + h}
+                      activeOpacity={0.75}
+                      disabled={!click}
+                      onPress={() => aoSelecionarSlot(slot)}
+                      style={[styles.cell, styles.cellDado, !click && styles.cellDesabilitada, sel && styles.sel]}
+                    >
+                      <StatusBadge status={slot.status} tamanho="sm" />
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
+
 const criarStyles = (cores: TemaCores) => StyleSheet.create({
+  container: { flexDirection: "row" },
+  colunaHoras: { zIndex: 1 },
   row: { flexDirection: "row" },
-  head: { minWidth: 112, color: cores.textoSecundario, padding: Espacamento.sm, ...Tipografia.legenda },
-  headSel: { color: cores.acentoTexto, ...Tipografia.subtitulo },
-  cellHora: {
-    minWidth: 112,
-    minHeight: 48,
-    borderWidth: 1,
-    borderColor: cores.divisor,
-    alignItems: "center",
-    justifyContent: "center",
-    color: cores.textoSecundario,
-    ...Tipografia.corpoMedio,
-  },
   cell: {
-    minWidth: 112,
-    minHeight: 48,
+    width: COL_DATA,
+    height: ALTURA_LINHA,
     borderWidth: 1,
     borderColor: cores.divisor,
     alignItems: "center",
     justifyContent: "center",
+    overflow: "hidden",
+  },
+  cabecalhoHora: { width: COL_HORA, backgroundColor: cores.fundoSecundario },
+  cellHoraWrap: {
+    width: COL_HORA,
     backgroundColor: cores.fundoSecundario,
   },
+  cellHoraTxt: {
+    color: cores.textoSecundario,
+    ...Tipografia.legenda,
+    textAlign: "center",
+  },
+  head: { color: cores.textoSecundario, ...Tipografia.legenda, textAlign: "center", paddingHorizontal: 4 },
+  headSel: { color: cores.acentoTexto, ...Tipografia.subtitulo },
+  cellDado: { backgroundColor: cores.fundoSecundario },
   cellDesabilitada: { opacity: 0.65 },
   sel: {
     borderColor: cores.acento,
@@ -89,4 +115,6 @@ const criarStyles = (cores: TemaCores) => StyleSheet.create({
     shadowRadius: 6,
     elevation: 4,
   },
+  vazio: { padding: Espacamento.lg, alignItems: "center" },
+  vazioTxt: { color: cores.textoSecundario, ...Tipografia.corpoMedio },
 });
