@@ -20,6 +20,7 @@ export const medicosMock: Medico[] = [
       { diaSemana: "SEG", tempo: 30, horaIni: "08:00", horaFim: "12:00" },
       { diaSemana: "QUA", tempo: 30, horaIni: "08:00", horaFim: "12:00" },
     ],
+    valorConsulta: 150.0,
   },
   {
     matricula: 2,
@@ -41,6 +42,7 @@ export const medicosMock: Medico[] = [
       { diaSemana: "TER", tempo: 30, horaIni: "09:00", horaFim: "13:00" },
       { diaSemana: "QUI", tempo: 30, horaIni: "09:00", horaFim: "13:00" },
     ],
+    valorConsulta: 200.0,
   },
   {
     matricula: 3,
@@ -61,5 +63,6 @@ export const medicosMock: Medico[] = [
       { diaSemana: "SEG", tempo: 30, horaIni: "07:00", horaFim: "11:00" },
       { diaSemana: "SEX", tempo: 30, horaIni: "07:00", horaFim: "11:00" },
     ],
+    valorConsulta: 180.0,
   },
 ];

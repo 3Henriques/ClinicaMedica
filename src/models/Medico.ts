@@ -12,4 +12,5 @@ export interface Medico {
   telefones: string[];
   especialidades: number[];
   diasAtendimento: DiasAtendimento[];
+  valorConsulta?: number;
 }
