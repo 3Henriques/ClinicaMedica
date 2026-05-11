@@ -24,10 +24,8 @@ export function Home({ navigation }: Props) {
     { titulo: "Clientes", rota: "ListarClientes", icone: "account-group-outline" },
     { titulo: "Marcar", rota: "MarcarConsulta", icone: "calendar-plus" },
     { titulo: "Confirmar", rota: "ConfirmarConsulta", icone: "calendar-check" },
-    { titulo: "Realizar", rota: "RealizarConsulta", icone: "stethoscope" },
     { titulo: "Encerrar", rota: "EncerrarConsulta", icone: "cash-register" },
     { titulo: "Cancelar", rota: "CancelarConsulta", icone: "calendar-remove" },
-    { titulo: "Medicos", rota: "ListarMedicos", icone: "doctor" },
   ];
 
   const modulosMedico: Modulo[] = [
