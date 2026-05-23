@@ -1,4 +1,6 @@
-import { Agenda, Status } from "../models/Agenda";
+import { Agenda } from "../models/Agenda";
+import { Status } from "../models/enums/Status";
+
 import { medicosMock } from "./medicos";
 
 const mapaDia: Record<number, "DOM"|"SEG"|"TER"|"QUA"|"QUI"|"SEX"|"SAB"> = {0:"DOM",1:"SEG",2:"TER",3:"QUA",4:"QUI",5:"SEX",6:"SAB"};
