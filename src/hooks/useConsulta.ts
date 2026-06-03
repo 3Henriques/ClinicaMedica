@@ -2,16 +2,20 @@ import { useMemo, useState } from "react";
 import { consultasMock } from "../mocks/consultas";
 import { Consulta, MotivoCancelamento, TipoPagamento } from "../models/Consulta";
 import { Status } from "../models/enums/Status";
+import { useFirestore } from "./useFirestore";
+import { db } from "../../config";
 
 const aguardar = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const hoje = () => { const d = new Date(); const p=(n:number)=>String(n).padStart(2,"0"); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`; };
 
 export function useConsulta() {
-  const [consultas, setConsultas] = useState<Consulta[]>(consultasMock);
+  const persistirConsulta = useFirestore(db, 'Consultas');
+  const [consultas, setConsultas] = useState<Consulta[]>([]);
 
   const marcar = async (dados: Omit<Consulta, "numero" | "status">): Promise<Consulta> => {
     await aguardar(300);
     const nova: Consulta = { ...dados, numero: Math.max(0, ...consultas.map((c) => c.numero)) + 1, status: "M" as Status };
+    await persistirConsulta(nova);
     setConsultas((a) => [...a, nova]);
     return nova;
   };
