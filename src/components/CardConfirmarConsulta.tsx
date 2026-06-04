@@ -4,7 +4,7 @@ import { Consulta } from "../models/Consulta";
 import { Espacamento, Raio, Sombra, TemaCores, Tipografia, useTema } from "../styles/Tema";
 import { StatusBadge } from "./StatusBadge";
 
-export function CardConfirmarConsulta({ consulta, nomeCliente, nomeMedico, confirmado, aoConfirmar }:
+export function CardConfirmarConsulta({ consulta, nomeCliente, nomeMedico, confirmado, cadastroCompleto = true, aoConfirmar }:
 
 
     {
@@ -12,6 +12,7 @@ export function CardConfirmarConsulta({ consulta, nomeCliente, nomeMedico, confi
         nomeCliente: string;
         nomeMedico: string;
         confirmado: boolean;
+        cadastroCompleto?: boolean;
         aoConfirmar: (numero: number) => void
     }
 
@@ -35,6 +36,9 @@ export function CardConfirmarConsulta({ consulta, nomeCliente, nomeMedico, confi
             <Text style={styles.txt}>{nomeMedico}</Text>
             <StatusBadge status={consulta.status} />
         </View>
+        {!cadastroCompleto && (
+            <Text style={styles.pendente}>Cadastro incompleto - toque para concluir antes de confirmar.</Text>
+        )}
     </TouchableOpacity>;
 }
 
@@ -96,5 +100,11 @@ const criarStyles = (cores: TemaCores) => StyleSheet.create({
         ...Tipografia.corpoMedio,
         color: cores.textoSecundario,
         flex: 1
+    },
+
+    pendente: {
+        ...Tipografia.legenda,
+        color: cores.aviso,
+        marginTop: Espacamento.sm
     }
 });
