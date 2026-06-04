@@ -6,6 +6,7 @@ import { Login } from "../screens/login/Login";
 import { Home } from "../screens/home/Home";
 import { ListarClientes } from "../screens/cliente/ListarClientes";
 import { CadastrarCliente } from "../screens/cliente/CadastrarCliente";
+import { CadastroInicialPaciente } from "../screens/cliente/CadastroInicialPaciente";
 import { MarcarConsulta } from "../screens/consulta/MarcarConsulta";
 import { ConfirmarConsulta } from "../screens/consulta/ConfirmarConsulta";
 import { RealizarConsulta } from "../screens/consulta/RealizarConsulta";
@@ -19,8 +20,9 @@ export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
   ListarClientes: undefined;
-  CadastrarCliente: { clienteIdParaEditar?: number } | undefined;
-  MarcarConsulta: { medicoId?: number; especialidadeId?: number } | undefined;
+  CadastrarCliente: { clienteIdParaEditar?: number; modoCadastro?: "completo" } | undefined;
+  CadastroInicialPaciente: undefined;
+  MarcarConsulta: { medicoId?: number; especialidadeId?: number; pacienteSelecionadoId?: number } | undefined;
   ConfirmarConsulta: undefined;
   RealizarConsulta: { consultaNumero?: number } | undefined;
   EncerrarConsulta: { consultaNumero?: number } | undefined;
@@ -74,8 +76,9 @@ export function AppNavigator() {
       >
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ title: "Inicio" }} />
-        <Stack.Screen name="ListarClientes" component={ListarClientes} options={{ title: "Clientes" }} />
-        <Stack.Screen name="CadastrarCliente" component={CadastrarCliente} options={{ title: "Cliente" }} />
+        <Stack.Screen name="ListarClientes" component={ListarClientes} options={{ title: "Pacientes" }} />
+        <Stack.Screen name="CadastrarCliente" component={CadastrarCliente} options={{ title: "Paciente" }} />
+        <Stack.Screen name="CadastroInicialPaciente" component={CadastroInicialPaciente} options={{ title: "Novo Paciente" }} />
         <Stack.Screen name="MarcarConsulta" component={MarcarConsulta} options={{ title: "Marcar Consulta" }} />
         <Stack.Screen name="ConfirmarConsulta" component={ConfirmarConsulta} options={{ title: "Confirmar Consulta" }} />
         <Stack.Screen name="RealizarConsulta" component={RealizarConsulta} options={{ title: "Realizar Consulta" }} />

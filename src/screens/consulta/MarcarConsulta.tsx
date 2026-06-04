@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../navigation/AppNavigator";
 import { useCliente } from "../../hooks/useCliente";
@@ -8,7 +8,6 @@ import { useEspecialidade } from "../../hooks/useEspecialidade";
 import { useMedico } from "../../hooks/useMedico";
 import { useAgenda } from "../../hooks/useAgenda";
 import { CampoTexto } from "../../components/CampoTexto";
-import { ListaGenerica } from "../../components/ListaGenerica";
 import { Combo } from "../../components/Combo";
 import { PlanilhaAgenda } from "../../components/PlanilhaAgenda";
 import { SelecionarPeriodo } from "../../components/SelecionarPeriodo";
@@ -57,6 +56,7 @@ export function MarcarConsulta({ route, navigation }: Props) {
   const { buscarPorEspecialidade, buscarPorId: medPorId } = useMedico();
   const medicoIdParam = route.params?.medicoId;
   const especialidadeIdParam = route.params?.especialidadeId;
+  const pacienteSelecionadoIdParam = route.params?.pacienteSelecionadoId;
   const { buscarSlots } = useAgenda();
   const { marcar } = useConsulta();
 
@@ -71,6 +71,13 @@ export function MarcarConsulta({ route, navigation }: Props) {
     }
   }, [medicoIdParam, especialidadeIdParam, medPorId]);
 
+  useEffect(() => {
+    if (pacienteSelecionadoIdParam == null) return;
+    const paciente = buscarPorId(pacienteSelecionadoIdParam);
+    setCliente(pacienteSelecionadoIdParam);
+    if (paciente?.nome) setBusca(paciente.nome);
+  }, [pacienteSelecionadoIdParam, buscarPorId]);
+
   const clientes = buscarPorNome(busca);
   const medicos = espId ? buscarPorEspecialidade(espId) : [];
   const slots = useMemo(
@@ -79,8 +86,8 @@ export function MarcarConsulta({ route, navigation }: Props) {
   );
 
   const titulosEtapa = [
-    "Selecione o cliente",
-    "Selecione medico e especialidade",
+    "Selecione o paciente",
+    "Selecione médico e especialidade",
     "Escolha o horario",
     "Revise e confirme",
   ];
@@ -97,31 +104,49 @@ export function MarcarConsulta({ route, navigation }: Props) {
 
       {etapa === 1 && (
         <>
-          <CampoTexto label="Buscar cliente" valor={busca} aoAlterar={setBusca} />
+          <CampoTexto
+            label="Buscar paciente"
+            valor={busca}
+            aoAlterar={setBusca}
+            placeholder="Buscar por nome, CPF ou telefone"
+          />
           <Botao
-            titulo="+ Cadastrar novo cliente"
+            titulo="+ Cadastrar novo paciente"
             variante="primario"
-            onPress={() => navigation.navigate("CadastrarCliente", {})}
+            onPress={() => navigation.navigate("CadastroInicialPaciente")}
             larguraTotal
           />
-          {clientes.map((c) => (
-            <Botao
-              key={c.identificador}
-              titulo={c.nome}
-              variante={clienteId === c.identificador ? "primario" : "secundario"}
-              onPress={() => setCliente(c.identificador)}
-              larguraTotal
-            />
-          ))}
+          <View style={styles.listaPacientes}>
+            {!clientes.length && (
+              <Text style={styles.listaVazia}>Nenhum paciente encontrado</Text>
+            )}
+            {clientes.map((c) => {
+              const telefone = c.telefone?.[0] || "Telefone nao informado";
+              const cpf = c.CPF || "CPF nao informado";
+              const nascimento = c.dtNascimento || "Nascimento nao informado";
+              const selecionado = clienteId === c.identificador;
+
+              return (
+                <TouchableOpacity
+                  key={c.identificador}
+                  activeOpacity={0.75}
+                  style={[styles.cardPaciente, selecionado && styles.cardPacienteSelecionado]}
+                  onPress={() => setCliente(c.identificador)}
+                >
+                  <View style={styles.cardPacienteTopo}>
+                    <Text style={styles.cardPacienteNome}>{c.nome || "Nome nao informado"}</Text>
+                    <Text style={[styles.cardPacienteStatus, c.cadastroCompleto ? styles.statusCompleto : styles.statusIncompleto]}>
+                      {c.cadastroCompleto ? "Cadastro completo" : "Cadastro incompleto"}
+                    </Text>
+                  </View>
+                  <Text style={styles.cardPacienteInfo}>{telefone}</Text>
+                  <Text style={styles.cardPacienteInfo}>{cpf}</Text>
+                  <Text style={styles.cardPacienteInfo}>{nascimento}</Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
           <Botao titulo="Avancar" onPress={() => setEtapa(2)} desabilitado={!clienteId} larguraTotal />
-          {clienteId && (
-            <Botao
-              titulo="Editar dados do cliente selecionado"
-              variante="ghost"
-              onPress={() => navigation.navigate("CadastrarCliente", { clienteIdParaEditar: clienteId })}
-              larguraTotal
-            />
-          )}
         </>
       )}
 
@@ -174,7 +199,7 @@ export function MarcarConsulta({ route, navigation }: Props) {
           <Text style={styles.resumoSubtitulo}>Confira os dados antes de confirmar.</Text>
           <View style={styles.resumoCard}>
             <View style={styles.resumoLinha}>
-              <Text style={styles.resumoLabel}>Cliente</Text>
+              <Text style={styles.resumoLabel}>Paciente</Text>
               <Text style={styles.resumoValor}>{buscarPorId(clienteId ?? 0)?.nome}</Text>
             </View>
             <View style={styles.resumoLinha}>
@@ -197,9 +222,9 @@ export function MarcarConsulta({ route, navigation }: Props) {
             </View>
           </View>
           <View style={styles.r}>
-            <Botao titulo="Alterar horario" variante="ghost" onPress={() => setEtapa(3)} larguraTotal />
+            <Botao titulo="Alterar horário" variante="ghost" onPress={() => setEtapa(3)} larguraTotal />
             <Botao
-              titulo="Confirmar marcacao"
+              titulo="Confirmar marcação"
               tamanho="lg"
               carregando={carregando}
               onPress={async () => {
@@ -295,5 +320,56 @@ const criarStyles = (cores: TemaCores) => StyleSheet.create({
      gap: Espacamento.sm,
       marginTop: Espacamento.md
     },
+
+  listaPacientes: {
+    gap: Espacamento.sm,
+  },
+
+  cardPaciente: {
+    backgroundColor: cores.fundoCartao,
+    padding: Espacamento.lg,
+    borderRadius: Raio.lg,
+    borderWidth: 1,
+    borderColor: cores.borda,
+  },
+
+  cardPacienteSelecionado: {
+    borderColor: cores.acento,
+    backgroundColor: cores.fundoCartaoElevado,
+  },
+
+  cardPacienteTopo: {
+    gap: Espacamento.xs,
+    marginBottom: Espacamento.sm,
+  },
+
+  cardPacienteNome: {
+    ...Tipografia.subtitulo,
+    color: cores.textoPrimario,
+  },
+
+  cardPacienteStatus: {
+    ...Tipografia.legenda,
+  },
+
+  statusCompleto: {
+    color: cores.sucesso,
+  },
+
+  statusIncompleto: {
+    color: cores.aviso,
+  },
+
+  cardPacienteInfo: {
+    ...Tipografia.corpoMedio,
+    color: cores.textoSecundario,
+  },
+
+  listaVazia: {
+    ...Tipografia.corpoMedio,
+    color: cores.textoSecundario,
+    textAlign: "center",
+    paddingVertical: Espacamento.lg,
+  },
 
 });
