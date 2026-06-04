@@ -1,6 +1,6 @@
 import { useState } from "react";
 import firebase from "firebase/compat/app";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, onSnapshot, query, QueryConstraint } from "firebase/firestore";
 
 export function useFirestore(db: any, nomeColecao: string){
     const [carregando, setCarregando] = useState(false);
@@ -25,6 +25,19 @@ export function useFirestore(db: any, nomeColecao: string){
         } finally {
             setCarregando(false)
         }
-    }
-    return adicionar;
+    };
+
+    const escutar = (callback: (dados: any[]) => void, ...filtros: QueryConstraint[]) => {
+        const q = query(collection(db, nomeColecao), ...filtros);
+        const cancelar = onSnapshot(q, (snapshot) => {
+            const dados = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+            callback(dados);
+        }, (err) => {
+            console.error("Erro no listener Firestore: ", err);
+        });
+        return cancelar;
+    };
+
+
+    return { adicionar, escutar, carregando};
 }
