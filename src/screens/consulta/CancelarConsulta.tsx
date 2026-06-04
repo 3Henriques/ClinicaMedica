@@ -53,7 +53,7 @@ export function CancelarConsulta() {
                         <Combo
                             label="Motivo"
                             itens={[
-                                { label: "Solicitacao do Cliente", value: "SOLICITACAO_CLIENTE" },
+                                { label: "Solicitacao do Paciente", value: "SOLICITACAO_CLIENTE" },
                                 { label: "Solicitacao do Medico", value: "SOLICITACAO_MEDICO" },
                                 { label: "Nao Comparecimento", value: "NAO_COMPARECIMENTO" }
                             ]} valor={motivo} onSelecionar={setMotivo}

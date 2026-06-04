@@ -21,7 +21,7 @@ export function Home({ navigation }: Props) {
   const consulta = useConsulta();
 
   const modulosSecretaria: Modulo[] = [
-    { titulo: "Clientes", rota: "ListarClientes", icone: "account-group-outline" },
+    { titulo: "Pacientes", rota: "ListarClientes", icone: "account-group-outline" },
     { titulo: "Marcar", rota: "MarcarConsulta", icone: "calendar-plus" },
     { titulo: "Confirmar", rota: "ConfirmarConsulta", icone: "calendar-check" },
     { titulo: "Encerrar", rota: "EncerrarConsulta", icone: "cash-register" },

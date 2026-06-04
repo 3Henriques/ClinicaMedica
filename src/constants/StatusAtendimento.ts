@@ -21,7 +21,7 @@ export const STATUS_UI: Record<string, { fundo: string; texto: string }> = {
 };
 
 export const LABEL_MOTIVO: Record<string, string> = {
-  SOLICITACAO_CLIENTE: "Solicitacao do Cliente",
+  SOLICITACAO_CLIENTE: "Solicitacao do Paciente",
   SOLICITACAO_MEDICO: "Solicitacao do Medico",
   NAO_COMPARECIMENTO: "Nao Comparecimento",
 };
