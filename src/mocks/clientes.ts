@@ -19,6 +19,8 @@ export const clientesMock: Cliente[] = [
     },
     nomeCovenio: "Unimed",
     matriculaConveniado: "UNM-2024-001",
+    cadastroCompleto: true,
+    statusCadastro: "COMPLETO",
   },
   {
     identificador: 2,
@@ -39,6 +41,8 @@ export const clientesMock: Cliente[] = [
     },
     nomeCovenio: "Bradesco Saúde",
     matriculaConveniado: "BRA-2024-002",
+    cadastroCompleto: true,
+    statusCadastro: "COMPLETO",
   },
   {
     identificador: 3,
@@ -58,6 +62,8 @@ export const clientesMock: Cliente[] = [
     },
     nomeCovenio: "SulAmérica",
     matriculaConveniado: "SUL-2024-003",
+    cadastroCompleto: true,
+    statusCadastro: "COMPLETO",
   },
   {
     identificador: 4,
@@ -77,6 +83,8 @@ export const clientesMock: Cliente[] = [
     },
     nomeCovenio: "Amil",
     matriculaConveniado: "AMI-2024-004",
+    cadastroCompleto: true,
+    statusCadastro: "COMPLETO",
   },
   {
     identificador: 5,
@@ -96,6 +104,8 @@ export const clientesMock: Cliente[] = [
     },
     nomeCovenio: "Hapvida",
     matriculaConveniado: "HAP-2024-005",
+    cadastroCompleto: true,
+    statusCadastro: "COMPLETO",
   },
   {
     identificador: 6,
@@ -115,5 +125,7 @@ export const clientesMock: Cliente[] = [
     },
     nomeCovenio: "Notre Dame",
     matriculaConveniado: "ND-2024-006",
+    cadastroCompleto: true,
+    statusCadastro: "COMPLETO",
   },
 ];

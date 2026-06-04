@@ -1,6 +1,6 @@
 import { useState } from "react";
 import firebase from "firebase/compat/app";
-import { collection, addDoc, onSnapshot, query, QueryConstraint } from "firebase/firestore";
+import { collection, addDoc, doc, onSnapshot, query, QueryConstraint, updateDoc } from "firebase/firestore";
 
 export function useFirestore(db: any, nomeColecao: string){
     const [carregando, setCarregando] = useState(false);
@@ -27,6 +27,20 @@ export function useFirestore(db: any, nomeColecao: string){
         }
     };
 
+    const atualizar = async (id: string, dados: any) => {
+        setCarregando(true);
+        setErro(null);
+
+        try {
+            await updateDoc(doc(db, nomeColecao, id), { ...dados });
+        } catch (err: any) {
+            console.error("Erro ao atualizar documento: ", err);
+            throw err;
+        } finally {
+            setCarregando(false);
+        }
+    };
+
     const escutar = (callback: (dados: any[]) => void, ...filtros: QueryConstraint[]) => {
         const q = query(collection(db, nomeColecao), ...filtros);
         const cancelar = onSnapshot(q, (snapshot) => {
@@ -39,5 +53,5 @@ export function useFirestore(db: any, nomeColecao: string){
     };
 
 
-    return { adicionar, escutar, carregando};
+    return { adicionar, atualizar, escutar, carregando};
 }
