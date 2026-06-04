@@ -3,6 +3,8 @@
 
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../navigation/AppNavigator";
 import { useConsulta } from "../../hooks/useConsulta";
 import { useCliente } from "../../hooks/useCliente";
 import { useMedico } from "../../hooks/useMedico";
@@ -11,7 +13,9 @@ import { CardConfirmarConsulta } from "../../components/CardConfirmarConsulta";
 import { Botao } from "../../components/Botao";
 import { Espacamento, TemaCores, Tipografia, useTema } from "../../styles/Tema";
 
-export function ConfirmarConsulta() {
+type Props = NativeStackScreenProps<RootStackParamList, "ConfirmarConsulta">;
+
+export function ConfirmarConsulta({ navigation }: Props) {
     const { cores } = useTema();
     const styles = criarStyles(cores);
     const { buscarNaoConfirmadasHoje, confirmar } = useConsulta();
@@ -20,6 +24,14 @@ export function ConfirmarConsulta() {
     const [setor, setSetor] = useState<Set<number>>(new Set());
     const dados = buscarNaoConfirmadasHoje();
     const toggle = (n: number) => {
+        const consulta = dados.find((c) => c.numero === n);
+        const cliente = consulta ? buscarPorId(consulta.clienteId) : undefined;
+
+        if (cliente && !cliente.cadastroCompleto) {
+            navigation.navigate("CadastrarCliente", { clienteIdParaEditar: cliente.identificador, modoCadastro: "completo" });
+            return;
+        }
+
         const novo = new Set(setor);
         novo.has(n) ? novo.delete(n) : novo.add(n);
         setSetor(novo);
@@ -38,13 +50,18 @@ export function ConfirmarConsulta() {
         <ListaGenerica
             dados={dados}
             textoVazio="Todas confirmadas"
-            renderItem={(c) => <CardConfirmarConsulta
-                consulta={c}
-                nomeCliente={buscarPorId(c.clienteId)?.nome ?? ""}
-                nomeMedico={buscarNome(c.medicoId)}
-                confirmado={setor.has(c.numero)}
-                aoConfirmar={toggle}
-            />}
+            renderItem={(c) => {
+                const cliente = buscarPorId(c.clienteId);
+
+                return <CardConfirmarConsulta
+                    consulta={c}
+                    nomeCliente={cliente?.nome ?? ""}
+                    nomeMedico={buscarNome(c.medicoId)}
+                    confirmado={setor.has(c.numero)}
+                    cadastroCompleto={cliente?.cadastroCompleto !== false}
+                    aoConfirmar={toggle}
+                />;
+            }}
         />
         <View style={styles.rodape}>
             <Botao
