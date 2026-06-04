@@ -1,11 +1,10 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { agendaMock } from "../mocks/agenda";
 import { Agenda } from "../models/Agenda";
 import { Status } from "../models/enums/Status";
 import { useConsulta } from "./useConsulta";
 
 export function useAgenda() {
-  const [agenda, setAgenda] = useState<Agenda[]>(agendaMock);
   const { consultas } = useConsulta();
 
   const buscarSlots = (medicoId: number, especialidadeId: number, dataInicio: string, dataFim: string): Agenda[] => {
@@ -15,7 +14,7 @@ export function useAgenda() {
         .map((c) => `${c.medicoId}_${c.data}_${c.horaInicio}`)
     );
 
-    return agenda.filter(
+    return agendaMock.filter(
       (s) =>
         s.medicoId === medicoId &&
         s.especialidadeId === especialidadeId &&
@@ -25,9 +24,5 @@ export function useAgenda() {
     );
   };
 
-  const atualizarStatus = (slotId: string, novoStatus: Status): void => {
-    setAgenda((atual) => atual.map((s) => (s.id === slotId ? { ...s, status: novoStatus } : s)));
-  };
-
-  return useMemo(() => ({ buscarSlots, atualizarStatus, agenda }), [agenda, consultas]);
+  return useMemo(() => ({ buscarSlots, consultas }), [consultas]);
 }

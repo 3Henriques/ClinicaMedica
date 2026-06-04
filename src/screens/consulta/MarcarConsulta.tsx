@@ -57,7 +57,7 @@ export function MarcarConsulta({ route, navigation }: Props) {
   const { buscarPorEspecialidade, buscarPorId: medPorId } = useMedico();
   const medicoIdParam = route.params?.medicoId;
   const especialidadeIdParam = route.params?.especialidadeId;
-  const { buscarSlots, atualizarStatus } = useAgenda();
+  const { buscarSlots } = useAgenda();
   const { marcar } = useConsulta();
 
   useEffect(() => {
@@ -214,7 +214,6 @@ export function MarcarConsulta({ route, navigation }: Props) {
                   horaFim: slot.horaFim,
                   tipo: tipo as TipoConsulta,
                 });
-                atualizarStatus(slot.id, "M");
                 setCarregando(false);
                 Alert.alert("Sucesso", "Consulta marcada com sucesso!", [
                   { text: "OK", onPress: () => navigation.navigate("Home") },
