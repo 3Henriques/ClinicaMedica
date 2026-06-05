@@ -5,6 +5,7 @@ export type MotivoCancelamento = "SOLICITACAO_CLIENTE" | "SOLICITACAO_MEDICO" | 
 export type TipoPagamento = "DINHEIRO" | "CARTAO_CREDITO" | "CARTAO_DEBITO" | "PIX" | "CONVENIO";
 
 export interface Consulta {
+  id: string,
   numero: number;
   clienteId: number;
   medicoId: number;

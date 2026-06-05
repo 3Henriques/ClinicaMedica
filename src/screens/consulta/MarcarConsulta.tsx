@@ -206,6 +206,7 @@ export function MarcarConsulta({ route, navigation }: Props) {
                 if (!clienteId || !medicoId || !espId || !slot) return;
                 setCarregando(true);
                 await marcar({
+                  id: "",
                   clienteId,
                   medicoId,
                   especialidadeId: espId,
