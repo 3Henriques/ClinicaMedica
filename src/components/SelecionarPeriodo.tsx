@@ -65,12 +65,23 @@ export function SelecionarPeriodo({
 
   const mudarMes = (delta: number) => {
     const base = toDate(dataInicio);
-    base.setDate(12);
-    base.setMonth(base.getMonth() + delta);
-    const y = base.getFullYear();
-    const m = base.getMonth();
-    const primeiro = new Date(y, m, 1);
-    const ultimo = new Date(y, m + 2, 0);
+    const mesAtual = base.getMonth();
+    const anoAtual = base.getFullYear();
+    
+    let novoMes = mesAtual + delta;
+    let novoAno = anoAtual;
+    
+    if (novoMes < 0) {
+      novoAno += Math.floor(novoMes / 12);
+      novoMes = ((novoMes % 12) + 12) % 12;
+    } else if (novoMes > 11) {
+      novoAno += Math.floor(novoMes / 12);
+      novoMes = novoMes % 12;
+    }
+    
+    const primeiro = new Date(novoAno, novoMes, 1);
+    const ultimo = new Date(novoAno, novoMes + 2, 0);
+    
     aoAlterarInicio(fmt(primeiro));
     aoAlterarFim(fmt(ultimo));
   };
