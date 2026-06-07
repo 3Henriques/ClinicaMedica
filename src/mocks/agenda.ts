@@ -15,10 +15,12 @@ const pick=():Status=>{const r=Math.random();return distribuicao.find(d=>r<=d.li
 function gerarSlots(): Agenda[] {
   const slots: Agenda[] = [];
   const hoje = new Date();
+  // Começar do primeiro dia do mês atual para cobrir todo o mês
+  const inicio = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
   for (const medico of medicosMock) {
-    for (let i=0;i<60;i++) {
-      const data = new Date(hoje);
-      data.setDate(hoje.getDate()+i);
+    for (let i=0;i<120;i++) {
+      const data = new Date(inicio);
+      data.setDate(inicio.getDate()+i);
       const dia = mapaDia[data.getDay()];
       const regra = medico.diasAtendimento.find((d)=>d.diaSemana===dia);
       if (!regra) continue;

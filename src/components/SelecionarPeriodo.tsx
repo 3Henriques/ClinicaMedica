@@ -42,25 +42,46 @@ export function SelecionarPeriodo({
     const i = toDate(dataInicio);
     const f = toDate(dataFim);
     const max = new Date(i);
-    max.setDate(i.getDate() + 60);
+    max.setDate(i.getDate() + 120);
     if (f < i) return "Data final deve ser maior que inicial";
-    if (f > max) return "Data final deve ser ate +60 dias";
+    if (f > max) return "Data final deve ser ate +120 dias";
     return "";
   }, [dataInicio, dataFim]);
 
   const refMes = useMemo(() => {
-    const d = toDate(dataInicio);
-    return `${MESES[d.getMonth()]} ${d.getFullYear()}`;
-  }, [dataInicio]);
+    const inicio = toDate(dataInicio);
+    const fim = toDate(dataFim);
+    const mesInicio = MESES[inicio.getMonth()];
+    const mesFim = MESES[fim.getMonth()];
+    const anoInicio = inicio.getFullYear();
+    const anoFim = fim.getFullYear();
+    
+    if (anoInicio === anoFim) {
+      return `${mesInicio} - ${mesFim} ${anoInicio}`;
+    } else {
+      return `${mesInicio} ${anoInicio} - ${mesFim} ${anoFim}`;
+    }
+  }, [dataInicio, dataFim]);
 
   const mudarMes = (delta: number) => {
     const base = toDate(dataInicio);
-    base.setDate(12);
-    base.setMonth(base.getMonth() + delta);
-    const y = base.getFullYear();
-    const m = base.getMonth();
-    const primeiro = new Date(y, m, 1);
-    const ultimo = new Date(y, m + 1, 0);
+    const mesAtual = base.getMonth();
+    const anoAtual = base.getFullYear();
+    
+    let novoMes = mesAtual + delta;
+    let novoAno = anoAtual;
+    
+    if (novoMes < 0) {
+      novoAno += Math.floor(novoMes / 12);
+      novoMes = ((novoMes % 12) + 12) % 12;
+    } else if (novoMes > 11) {
+      novoAno += Math.floor(novoMes / 12);
+      novoMes = novoMes % 12;
+    }
+    
+    const primeiro = new Date(novoAno, novoMes, 1);
+    const ultimo = new Date(novoAno, novoMes + 2, 0);
+    
     aoAlterarInicio(fmt(primeiro));
     aoAlterarFim(fmt(ultimo));
   };

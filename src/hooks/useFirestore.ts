@@ -52,6 +52,19 @@ export function useFirestore(db: any, nomeColecao: string){
         return cancelar;
     };
 
+    // const atualizar = async (documentId: string, dados: any) => {
+    //     setCarregando(true);
+    //     setErro(null);
 
-    return { adicionar, atualizar, escutar, carregando};
+    //     try {
+    //         await updateDoc(doc(db, nomeColecao, documentId), dados);
+    //     } catch (err: any) {
+    //         console.error("Erro ao atualizar documento: ", err);
+    //         throw err;
+    //     } finally {
+    //         setCarregando(false);
+    //     }
+    // };
+
+    return { adicionar, escutar, atualizar, carregando};
 }

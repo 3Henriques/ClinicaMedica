@@ -11,7 +11,7 @@ const hoje = () => {
 };
 
 export function useConsulta() {
-    const { adicionar, escutar } = useFirestore(db, "Consultas");
+    const { adicionar, escutar, atualizar } = useFirestore(db, "Consultas");
     const [consultas, setConsultas] = useState<Consulta[]>([]);
 
     useEffect(() => {
@@ -25,7 +25,7 @@ export function useConsulta() {
             })) as Consulta[];
             setConsultas(convertidas);
         });
-        return () => cancelar(); // cancela o listener ao desmontar
+        return () => cancelar();
     }, []);
 
     const marcar = async (dados: Omit<Consulta, "numero" | "status">): Promise<Consulta> => {
@@ -39,20 +39,32 @@ export function useConsulta() {
     };
 
     const confirmar = async (numero: number): Promise<void> => {
-        setConsultas((a) => a.map((c) => c.numero === numero ? { ...c, status: "CONFIRMADA" as Status } : c));
+        const consulta = consultas.find((c) => c.numero === numero);
+        if (consulta?.id) {
+            await atualizar(consulta.id, { status: "OK" });
+        }
     };
 
     const realizar = async (numero: number, laudo: string, receita?: string): Promise<void> => {
-        setConsultas((a) => a.map((c) => c.numero === numero ? { ...c, status: "REALIZADA" as Status, laudo, receita } : c));
+        const consulta = consultas.find((c) => c.numero === numero);
+        if (consulta?.id) {
+            await atualizar(consulta.id, { status: "R", laudo, receita });
+        }
     };
 
     const encerrar = async (numero: number, valor: number, tipoPagamento: TipoPagamento, procedimentos?: string): Promise<void> => {
-        setConsultas((a) => a.map((c) => c.numero === numero ? { ...c, status: "E" as Status, valor, tipoPagamento, procedimentos } : c));
+        const consulta = consultas.find((c) => c.numero === numero);
+        if (consulta?.id) {
+            await atualizar(consulta.id, { status: "E", valor, tipoPagamento, procedimentos });
+        }
     };
 
     const cancelar = async (numero: number, motivo: MotivoCancelamento, observacao?: string): Promise<void> => {
-        const s = motivo === "SOLICITACAO_MEDICO" ? "X" : "C";
-        setConsultas((a) => a.map((c) => c.numero === numero ? { ...c, status: s as Status, motivoCancelamento: motivo, observacoes: observacao } : c));
+        const consulta = consultas.find((c) => c.numero === numero);
+        if (consulta?.id) {
+            const status = motivo === "SOLICITACAO_MEDICO" ? "X" : "C";
+            await atualizar(consulta.id, { status, motivoCancelamento: motivo, observacoes: observacao });
+        }
     };
 
     const buscarPorStatus = (situacao: Status | Status[]): Consulta[] => {

@@ -37,6 +37,13 @@ const ultimoDiaMes = () => {
   return `${ultimo.getFullYear()}-${p(ultimo.getMonth() + 1)}-${p(ultimo.getDate())}`;
 };
 
+const ultimoDiaDoisMeses = () => {
+  const d = new Date();
+  const ultimo = new Date(d.getFullYear(), d.getMonth() + 2, 0);
+  const p = (n: number) => String(n).padStart(2, "0");
+  return `${ultimo.getFullYear()}-${p(ultimo.getMonth() + 1)}-${p(ultimo.getDate())}`;
+};
+
 export function MarcarConsulta({ route, navigation }: Props) {
   const { cores } = useTema();
   const styles = criarStyles(cores);
@@ -47,7 +54,7 @@ export function MarcarConsulta({ route, navigation }: Props) {
   const [espId, setEsp] = useState<number | null>(null);
   const [tipo, setTipo] = useState<string | number>("NOVA");
   const [ini, setIni] = useState(primeiroDiaMes());
-  const [fim, setFim] = useState(ultimoDiaMes());
+  const [fim, setFim] = useState(ultimoDiaDoisMeses());
   const [slot, setSlot] = useState<Agenda | null>(null);
   const [carregando, setCarregando] = useState(false);
 
@@ -231,6 +238,7 @@ export function MarcarConsulta({ route, navigation }: Props) {
                 if (!clienteId || !medicoId || !espId || !slot) return;
                 setCarregando(true);
                 await marcar({
+                  id: "",
                   clienteId,
                   medicoId,
                   especialidadeId: espId,
